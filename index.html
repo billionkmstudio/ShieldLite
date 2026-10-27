@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.pwnedpasswords.com https://safebrowsing.googleapis.com; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="strict-origin">
+<title>ShieldLite</title>
+<meta name="description" content="Link checker, breached-password check and iPhone security checklist. Runs on your device.">
+<meta name="theme-color" content="#e9eef0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c171b" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ShieldLite">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8 3v5.8c0 4.9-3.3 8.6-8 10.2-4.7-1.600-8-5.300-8-10.200V5.500z"/><path d="M8.500 12l2.500 2.500 4.500-5"/></svg>
+    <div>
+      <b>ShieldLite</b>
+      <small data-i18n="tagline"></small>
+    </div>
+  </div>
+  <button id="langBtn" class="pill" type="button"></button>
+</header>
+
+<aside id="installHint" class="install" hidden>
+  <div>
+    <b data-i18n="inst_t"></b>
+    <span data-i18n="inst_d"></span>
+  </div>
+  <button id="installClose" class="pill" type="button" data-i18n="inst_close"></button>
+</aside>
+
+<main>
+
+  <!-- ===== 連結 ===== -->
+  <section id="tab-link" role="tabpanel" aria-labelledby="btn-link">
+    <h1 data-i18n="link_h"></h1>
+    <p class="lede" data-i18n="link_lede"></p>
+    <form id="linkForm" class="block" autocomplete="off">
+      <label for="linkInput" class="sr-only" data-i18n="link_label"></label>
+      <textarea id="linkInput" rows="3" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" data-i18n-ph="link_ph"></textarea>
+      <div class="row">
+        <button type="button" id="pasteBtn" class="btn ghost" data-i18n="paste"></button>
+        <button type="submit" class="btn primary" data-i18n="link_check"></button>
+      </div>
+    </form>
+    <div id="linkResult" aria-live="polite" hidden></div>
+  </section>
+
+  <!-- ===== 密碼 ===== -->
+  <section id="tab-pw" role="tabpanel" aria-labelledby="btn-pw" hidden>
+    <h1 data-i18n="pw_h"></h1>
+    <p class="lede" data-i18n="pw_lede"></p>
+    <form id="pwForm" class="block" autocomplete="off">
+      <label for="pwInput" class="sr-only" data-i18n="pw_label"></label>
+      <div class="field">
+        <input id="pwInput" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-i18n-ph="pw_ph">
+        <button type="button" id="pwToggle" class="field-btn" data-i18n="show"></button>
+      </div>
+      <div class="meter" id="meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div id="strengthLine" class="strength-line" aria-live="polite"></div>
+      <div class="row">
+        <button type="button" id="pwClear" class="btn ghost" data-i18n="clear"></button>
+        <button type="submit" class="btn primary" data-i18n="pw_check"></button>
+      </div>
+      <p class="fine" data-i18n="pw_privacy"></p>
+    </form>
+    <div id="pwResult" aria-live="polite" hidden></div>
+
+    <h2 data-i18n="gen_h"></h2>
+    <div class="block" id="genBlock">
+      <output id="genOut" class="genout" aria-live="polite"></output>
+      <div class="gen-opts">
+        <label class="range"><span data-i18n="gen_len"></span> <b id="genLenVal">20</b>
+          <input id="genLen" type="range" min="12" max="40" value="20"></label>
+        <label class="chk"><input type="checkbox" id="gUpper" checked><span data-i18n="gen_upper"></span></label>
+        <label class="chk"><input type="checkbox" id="gLower" checked><span data-i18n="gen_lower"></span></label>
+        <label class="chk"><input type="checkbox" id="gDigits" checked><span data-i18n="gen_digits"></span></label>
+        <label class="chk"><input type="checkbox" id="gSymbols" checked><span data-i18n="gen_symbols"></span></label>
+        <label class="chk"><input type="checkbox" id="gNoAmb" checked><span data-i18n="gen_noamb"></span></label>
+      </div>
+      <div class="row">
+        <button type="button" id="genNew" class="btn ghost" data-i18n="gen_new"></button>
+        <button type="button" id="genCopy" class="btn primary" data-i18n="copy"></button>
+      </div>
+      <p class="fine" data-i18n="gen_note"></p>
+    </div>
+
+    <h2 data-i18n="email_h"></h2>
+    <div class="block">
+      <p data-i18n="email_p"></p>
+      <a class="btn ghost" href="https://haveibeenpwned.com/" target="_blank" rel="noopener noreferrer" data-i18n="email_btn"></a>
+    </div>
+  </section>
+
+  <!-- ===== 健檢 ===== -->
+  <section id="tab-health" role="tabpanel" aria-labelledby="btn-health" hidden>
+    <h1 data-i18n="hl_h"></h1>
+    <p class="lede" data-i18n="hl_lede"></p>
+    <div id="healthSummary" class="summary"></div>
+    <div id="healthList"></div>
+    <div class="row end">
+      <button type="button" id="healthReset" class="btn ghost" data-i18n="hl_reset"></button>
+    </div>
+    <p class="fine" data-i18n="hl_note"></p>
+  </section>
+
+  <!-- ===== 關於 ===== -->
+  <section id="tab-about" role="tabpanel" aria-labelledby="btn-about" hidden>
+    <h1 data-i18n="ab_h"></h1>
+    <p class="lede" data-i18n="ab_what"></p>
+
+    <h2 data-i18n="ab_cant_h"></h2>
+    <ul class="plain">
+      <li data-i18n="ab_cant1"></li>
+      <li data-i18n="ab_cant2"></li>
+      <li data-i18n="ab_cant3"></li>
+    </ul>
+
+    <h2 data-i18n="ab_net_h"></h2>
+    <ul class="plain">
+      <li data-i18n="ab_net1"></li>
+      <li data-i18n="ab_net2"></li>
+      <li data-i18n="ab_net3"></li>
+    </ul>
+
+    <h2 data-i18n="ab_sb_h"></h2>
+    <p data-i18n="ab_sb_p"></p>
+    <ol class="plain steps">
+      <li data-i18n="ab_sb_s1"></li>
+      <li data-i18n="ab_sb_s2"></li>
+      <li data-i18n="ab_sb_s3"></li>
+      <li><span data-i18n="ab_sb_s4"></span> <code id="refHint"></code></li>
+      <li data-i18n="ab_sb_s5"></li>
+      <li data-i18n="ab_sb_s6"></li>
+    </ol>
+    <p class="fine"><span data-i18n="ab_sb_menu_note"></span>
+      <a href="https://developers.google.com/safe-browsing/v4/get-started" target="_blank" rel="noopener noreferrer" data-i18n="ab_sb_guide"></a></p>
+    <form id="sbForm" class="block" autocomplete="off">
+      <label class="chk"><input type="checkbox" id="sbOn"><span data-i18n="ab_sb_toggle"></span></label>
+      <label for="sbKey" class="sr-only" data-i18n="ab_sb_key_label"></label>
+      <input id="sbKey" class="plainfield" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-i18n-ph="ab_sb_key_ph">
+      <div class="row">
+        <button type="button" id="sbTest" class="btn ghost" data-i18n="ab_sb_test"></button>
+        <button type="submit" class="btn primary" data-i18n="ab_save"></button>
+      </div>
+      <div id="sbTestResult" class="sbline" aria-live="polite"></div>
+    </form>
+
+    <h2 data-i18n="ab_install_h"></h2>
+    <p data-i18n="ab_install_p"></p>
+
+    <h2 data-i18n="ab_data_h"></h2>
+    <div class="row start">
+      <button type="button" id="clearData" class="btn danger" data-i18n="ab_clear"></button>
+    </div>
+    <p class="fine"><span data-i18n="ab_ver"></span> 1.0.0</p>
+  </section>
+
+</main>
+
+<nav class="tabbar" aria-label="Main">
+  <div class="tabbar-in" role="tablist">
+    <button class="tab" id="btn-link" role="tab" aria-controls="tab-link" type="button" data-tab="link">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.700 0l3-3a4 4 0 0 0-5.700-5.700l-1 1"/><path d="M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></svg>
+      <span data-i18n="tab_link"></span>
+    </button>
+    <button class="tab" id="btn-pw" role="tab" aria-controls="tab-pw" type="button" data-tab="pw">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></svg>
+      <span data-i18n="tab_pw"></span>
+    </button>
+    <button class="tab" id="btn-health" role="tab" aria-controls="tab-health" type="button" data-tab="health">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v5c0 5-3.400 8.700-8 10-4.600-1.300-8-5-8-10V6z"/><path d="M8.500 12l2.500 2.500 4.500-5"/></svg>
+      <span data-i18n="tab_health"></span>
+    </button>
+    <button class="tab" id="btn-about" role="tab" aria-controls="tab-about" type="button" data-tab="about">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+      <span data-i18n="tab_about"></span>
+    </button>
+  </div>
+</nav>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
