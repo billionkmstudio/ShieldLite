@@ -1,18 +1,83 @@
 {
-  "updated": "2026-11-23T03:00:00.000Z",
+  "updated": "2026-11-23T02:58:06.061Z",
   "chrome": {
-    "win": { "latest": "158.0.8127.37", "min": "157.0.8103.79" }
+    "win": {
+      "latest": "158.0.8127.37",
+      "min": "157.0.8103.79"
+    },
+    "mac": {
+      "latest": "158.0.8127.37",
+      "min": "157.0.8103.79"
+    },
+    "linux": {
+      "latest": "158.0.8127.36",
+      "min": "158.0.8127.36"
+    },
+    "android": {
+      "latest": "157.0.8103.78",
+      "min": "157.0.8103.78"
+    },
+    "ios": {
+      "latest": "158.0.8127.35",
+      "min": "158.0.8127.35"
+    }
   },
   "ios": {
     "branches": [
-      { "major": 27, "latest": "27.2.1", "date": "2026-11-09", "exploited": 0 },
-      { "major": 26, "latest": "26.7.3", "date": "2026-11-09", "exploited": 0 }
+      {
+        "major": 27,
+        "latest": "27.2.1",
+        "date": "2026-11-09",
+        "exploited": 1
+      },
+      {
+        "major": 26,
+        "latest": "26.7.3",
+        "date": "2026-11-09",
+        "exploited": 1
+      },
+      {
+        "major": 18,
+        "latest": "18.7.9",
+        "date": "2026-05-11",
+        "exploited": 0
+      }
     ]
   },
   "kev": {
     "chromium": [
-      { "cve": "CVE-2026-125350", "date": "2026-11-10", "name": "Google Chromium XML Use-After-Free Vulnerability" }
+      {
+        "cve": "CVE-2026-125350",
+        "date": "2026-11-10",
+        "name": "Google Chromium Use-After-Free Vulnerability"
+      },
+      {
+        "cve": "CVE-2026-87491",
+        "date": "2026-09-09",
+        "name": "Google Chromium V8 Out of Bounds Write Vulnerability"
+      },
+      {
+        "cve": "CVE-2026-85046",
+        "date": "2026-09-04",
+        "name": "Google Chromium V8 Type Confusion Vulnerability"
+      }
     ],
-    "apple": []
+    "apple": [
+      {
+        "cve": "CVE-2024-27834",
+        "date": "2026-11-04",
+        "name": "Apple Multiple Products Improper Authentication Vulnerability"
+      },
+      {
+        "cve": "CVE-2026-86950",
+        "date": "2026-09-29",
+        "name": "Apple Multiple Products Out-of-Bounds Write Vulnerability"
+      },
+      {
+        "cve": "CVE-2025-43510",
+        "date": "2026-03-20",
+        "name": "Apple Multiple Products Improper Locking Vulnerability"
+      }
+    ]
   }
 }
