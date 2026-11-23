@@ -603,9 +603,21 @@
     return out;
   }
 
+  // Android security patch level: "YYYY-MM" (or a full date) → months behind today.
+  // status: ok (0–2 months), caution (3–5), high (6+). Google ships patches monthly.
+  function assessPatch(patch, now) {
+    const m = String(patch || '').match(/^(\d{4})-(\d{1,2})/);
+    if (!m) return null;
+    const y = +m[1], mo = +m[2];
+    if (mo < 1 || mo > 12) return null;
+    now = now || new Date();
+    const months = Math.max(0, (now.getFullYear() * 12 + now.getMonth() + 1) - (y * 12 + mo));
+    return { months, status: months <= 2 ? 'ok' : months <= 5 ? 'caution' : 'high' };
+  }
+
   return {
     analyzeUrl, defang, registrable, levenshtein, punyDecode, hostToUnicode,
     sha1Hex, parseRange, pwnedCount, estimateStrength, generatePassword, safeBrowsingLookup, BRANDS,
-    cmpVer, detectClient, assessClient
+    cmpVer, detectClient, assessClient, assessPatch
   };
 });

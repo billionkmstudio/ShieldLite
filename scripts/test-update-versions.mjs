@@ -41,5 +41,6 @@ const kev = parseKev({
 });
 assert.deepEqual(kev.chromium.map((v) => v.cve), ['CVE-A', 'CVE-B']);
 assert.deepEqual(kev.apple.map((v) => v.cve), ['CVE-D']);
+assert.deepEqual(kev.android.map((v) => v.cve), ['CVE-C']);
 
 console.log('update-versions parsers ok');

@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.pwnedpasswords.com https://safebrowsing.googleapis.com; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="strict-origin">
 <title>ShieldLite</title>
-<meta name="description" content="Link checker, breached-password check, browser and iOS version check, and iPhone security checklist. Runs on your device.">
+<meta name="description" content="Link checker, breached-password check, version check, and iPhone and Android security checklists. Runs on your device.">
 <meta name="theme-color" content="#e9eef0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0c171b" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,7 +34,7 @@
 <aside id="installHint" class="install" hidden>
   <div>
     <b data-i18n="inst_t"></b>
-    <span data-i18n="inst_d"></span>
+    <span id="instText"></span>
   </div>
   <button id="installClose" class="pill" type="button" data-i18n="inst_close"></button>
 </aside>
@@ -104,15 +104,20 @@
 
   <!-- ===== 健檢 ===== -->
   <section id="tab-health" role="tabpanel" aria-labelledby="btn-health" hidden>
-    <h1 data-i18n="hl_h"></h1>
+    <h1 id="hlTitle"></h1>
     <p class="lede" data-i18n="hl_lede"></p>
+    <div class="seg" role="radiogroup" data-i18n-aria="plat_label">
+      <button type="button" role="radio" class="seg-btn" data-plat="ios">iPhone</button>
+      <button type="button" role="radio" class="seg-btn" data-plat="android">Android</button>
+    </div>
     <div id="verCard" class="vercard" aria-live="polite"></div>
+    <div id="patchCard" class="vercard" hidden></div>
     <div id="healthSummary" class="summary"></div>
     <div id="healthList"></div>
     <div class="row end">
       <button type="button" id="healthReset" class="btn ghost" data-i18n="hl_reset"></button>
     </div>
-    <p class="fine" data-i18n="hl_note"></p>
+    <p class="fine" id="hlNote"></p>
   </section>
 
   <!-- ===== 關於 ===== -->
@@ -165,7 +170,7 @@
     <div class="row start">
       <button type="button" id="clearData" class="btn danger" data-i18n="ab_clear"></button>
     </div>
-    <p class="fine"><span data-i18n="ab_ver"></span> 1.1.0</p>
+    <p class="fine"><span data-i18n="ab_ver"></span> 1.2.0</p>
   </section>
 
 </main>

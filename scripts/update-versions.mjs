@@ -55,6 +55,7 @@ export function parseKev(json, n = 3) {
     .map((v) => ({ cve: v.cveID, date: v.dateAdded, name: v.vulnerabilityName }));
   return {
     chromium: pick((v) => v.vendorProject === 'Google' && /chrom/i.test(v.product || '')),
+    android: pick((v) => /^android$/i.test(v.product || '') && /google|android/i.test(v.vendorProject || '')),
     apple: pick((v) => v.vendorProject === 'Apple' && /(ios|webkit|ipados|multiple products)/i.test(v.product || ''))
   };
 }
@@ -80,7 +81,7 @@ async function main() {
   }
   let ios = prev.ios || null;
   try { ios = parseSofa(await getJson(SOFA_URL)) || ios; } catch (e) { console.warn('ios', e.message); }
-  let kev = prev.kev || { chromium: [], apple: [] };
+  let kev = prev.kev || { chromium: [], android: [], apple: [] };
   try { kev = parseKev(await getJson(KEV_URL)); } catch (e) { console.warn('kev', e.message); }
 
   const data = { chrome, ios, kev };

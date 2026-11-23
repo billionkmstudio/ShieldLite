@@ -1,7 +1,7 @@
 {
   "name": "ShieldLite",
   "short_name": "ShieldLite",
-  "description": "Link checker, breached-password check and iPhone security checklist.",
+  "description": "Link checker, breached-password check, and iPhone and Android security checklists.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
