@@ -1,6 +1,6 @@
 # ShieldLite
 
-iPhone 用嘅輕量防護 PWA：連結釣魚分析、密碼洩漏檢查（k-匿名）、系統同瀏覽器版本檢查、iPhone 保安健檢清單。純靜態檔案，冇後端。
+iPhone 同 Android 用嘅輕量防護 PWA：連結釣魚分析、密碼洩漏檢查（k-匿名）、系統同瀏覽器版本檢查、iPhone／Android 保安健檢清單。純靜態檔案，冇後端。
 
 ## 部署（一定要 HTTPS）
 
@@ -34,6 +34,13 @@ Safe Browsing API 只供個人非商業用途，商業用途要用 Google Web Ri
 
 注意：頁面用咗 `strict-origin` referrer 政策，所以瀏覽器只會傳送網域（冇路徑），參照網址一定要寫成 `https://你的網域/*`，寫 `https://你的網域/shieldlite/*` 會對唔上。
 測試出現 400 通常係 Key 打錯或者未啟用 API，403 通常係參照網址限制對唔上。官方說明：https://developers.google.com/safe-browsing/v4/get-started
+
+## Android 支援
+
+- 健檢頁頂有「iPhone｜Android」切換，預設跟部機自動揀，揀咗會記住（幫家人檢查都得）。
+- Android 清單 18 項，重點係假 APK、Play Protect、無障礙權限、裝置管理員同讀短訊權限。進度 id 用 `a_` 開頭，同 iPhone 清單分開儲存；「重設清單」只會清當前平台。
+- 保安更新日期：網頁讀唔到，叫用家去設定睇，再揀月份；0–2 個月算正常，3–5 個月提醒，6 個月以上提示可能已停止支援。如果 `versions.json` 有 Android 已被利用漏洞（CISA KEV），會一併顯示。
+- Android Chrome 會用 client hints 顯示真實 Android 版本同型號。
 
 ## 版本檢查
 

@@ -200,5 +200,16 @@ const ids = (r) => r.findings.map((f) => f.id);
     assert.equal(C.assessClient(C.detectClient(UA.winChrome, hints('157.0.8103.51')), {})[0].status, 'nodata');
   });
 
+  ok('assessPatch months and status', () => {
+    const now = new Date(2026, 10, 23); // 23 Nov 2026
+    assert.deepEqual(C.assessPatch('2026-11', now), { months: 0, status: 'ok' });
+    assert.deepEqual(C.assessPatch('2026-09-05', now), { months: 2, status: 'ok' });
+    assert.deepEqual(C.assessPatch('2026-08', now), { months: 3, status: 'caution' });
+    assert.deepEqual(C.assessPatch('2025-12', now), { months: 11, status: 'high' });
+    assert.deepEqual(C.assessPatch('2027-01', now), { months: 0, status: 'ok' });
+    assert.equal(C.assessPatch('', now), null);
+    assert.equal(C.assessPatch('2026-13', now), null);
+  });
+
   console.log(`\n${n} checks passed`);
 })().catch((e) => { console.error(e); process.exit(1); });

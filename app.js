@@ -35,6 +35,7 @@
       paste: '貼上', copy: '複製', copied: '已複製', clear: '清除', show: '顯示', hide: '隱藏',
       inst_t: '加入主畫面',
       inst_d: '喺 Safari 撳分享按鈕，揀「加入主畫面」，就可以當 App 用，連結分析仲可以離線使用。',
+      inst_d_android: '喺 Chrome 撳右上角 ⋮，揀「安裝應用程式」或「加至主畫面」，就可以當 App 用，連結分析仲可以離線使用。',
       inst_close: '知道',
 
       link_h: '檢查連結',
@@ -117,7 +118,8 @@
       email_p: '電郵洩漏查詢需要登入或付費 API，所以呢個工具唔直接查。可以去 Have I Been Pwned 官方網站，只會將你輸入嘅電郵傳畀佢哋。',
       email_btn: '開啟 Have I Been Pwned',
 
-      hl_h: 'iPhone 保安健檢',
+      hl_h: 'iPhone 保安健檢', hl_h_android: 'Android 保安健檢',
+      plat_label: '揀手機類型',
       hl_lede: '網頁讀唔到你部機嘅系統設定，所以呢度係自我檢查清單。逐項對住設定撳一撳，睇完再打剔。',
       hl_score: '保安分數',
       hl_good: '做得唔錯', hl_ok: '尚可，仲有改善空間', hl_low: '需要加強',
@@ -125,6 +127,7 @@
       hl_all: '全部做齊，繼續保持。',
       hl_reset: '重設清單',
       hl_note: '選單名稱可能因 iOS 版本略有不同。清單進度只儲存喺你部機。',
+      hl_note_android: '選單名稱因品牌（Samsung、Pixel、小米等）同 Android 版本會有出入，搵唔到可以用設定入面嘅搜尋。清單進度只儲存喺你部機。',
       hl_must: '重要',
       hl_env_https: '安全連線（HTTPS）', hl_env_app: '已加入主畫面', hl_env_net: '有網絡',
       v_h: '版本檢查',
@@ -157,6 +160,56 @@
       v_how_other: '去瀏覽器嘅「設定 → 關於」檢查更新。',
       v_foot: (d) => `版本資料更新於 ${d}。結果係由瀏覽器提供嘅資料推算，未必百分百準確。`,
       g_device: '裝置', g_account: '帳戶同密碼', g_net: '網絡同訊息', g_privacy: '私隱',
+      p_h: '保安更新日期',
+      p_how: '網頁讀唔到呢個日期。去 設定 → 關於手機 → Android 版本 →「Android 保安更新」（Samsung：設定 → 關於手機 → 軟件資訊 →「Android 安全性修補程式等級」），再喺下面揀返個月份。',
+      p_label: 'Android 保安更新月份',
+      p_device: (v) => `偵測到：${v}`,
+      p_see: '我哋見到', p_should: '應該係', p_why: '點解要理',
+      p_have: (ym, n) => n === 0 ? `${ym}（今個月）` : `${ym}（舊咗 ${n} 個月）`,
+      p_want: '最近 1–2 個月內',
+      p_s_ok: '仲有更新', p_s_caution: '有啲舊', p_s_high: '可能已停止支援',
+      p_why_ok: 'Google 每個月出保安修補，你部機仲有定期收到。',
+      p_why_caution: '已經 3 個月或以上冇裝保安修補。去「軟件更新」睇下有冇更新可以裝；如果冇，可能係廠商開始減少支援。',
+      p_why_high: '超過半年冇保安修補，部機好可能已經停止支援。網上銀行同付款最好轉用仲有更新嘅手機。',
+      p_kev: '近期已被利用嘅 Android 漏洞：',
+      p_clear: '清除',
+      g_a_device: '裝置', g_a_apps: 'App 同惡意程式', g_a_account: '帳戶同密碼', g_a_net: '網絡同訊息',
+      h_a_update_t: '系統同保安更新保持最新',
+      h_a_update_d: '設定 → 系統 → 軟件更新（Samsung：設定 → 軟件更新）。另外去 設定 → 保安與私隱 → 系統與更新 → Google Play 系統更新。',
+      h_a_lock_t: '用 6 位或以上嘅 PIN 或密碼',
+      h_a_lock_d: '設定 → 保安與私隱 → 裝置解鎖 → 螢幕鎖定。唔好用圖案鎖，好容易俾人喺旁邊偷睇到。',
+      h_a_theft_t: '開啟失竊保護',
+      h_a_theft_d: '設定 → Google → 所有服務 → 失竊保護，開啟「失竊偵測鎖定」同「離線裝置鎖定」。有人搶咗部機跑走，部機會自動鎖上。',
+      h_a_find_t: '開啟「尋找我的裝置」',
+      h_a_find_d: '設定 → Google → 所有服務 → 尋找我的裝置，確認已開啟。Samsung 用家可以同時開「SmartThings Find」。',
+      h_a_sideload_t: '唔好裝來歷不明嘅 APK',
+      h_a_sideload_d: '設定 → 應用程式 → 特殊應用程式存取權 → 安裝不明應用程式，全部 App 都設為「不允許」。騙徒最常經 WhatsApp、短訊或者假客服叫你裝 APK，正規 App 一定喺 Play 商店有。',
+      h_a_protect_t: '開啟 Google Play Protect',
+      h_a_protect_d: 'Play 商店 → 撳右上角頭像 → Play Protect → ⚙ 設定，開啟「使用 Play Protect 掃描應用程式」。順手撳「掃描」做一次檢查。',
+      h_a_access_t: '檢查「無障礙」權限',
+      h_a_access_d: '設定 → 無障礙功能 → 已下載的應用程式（或「已安裝的服務」）。除咗你認識又真係需要嘅（例如密碼管理工具），全部關閉。惡意 App 攞到呢個權限，可以睇住你個畫面、代你撳掣，用嚟偷銀行驗證碼。',
+      h_a_admin_t: '檢查裝置管理員同讀取短訊嘅 App',
+      h_a_admin_d: '設定 → 保安與私隱 → 更多保安設定 → 裝置管理員應用程式，只保留「尋找我的裝置」等你認識嘅。再去 設定 → 私隱 → 權限管理員 → 短訊，睇邊啲 App 讀得到短訊。',
+      h_a_apps_t: '刪走唔再用同唔認識嘅 App',
+      h_a_apps_d: '設定 → 應用程式，睇晒全部 App，刪除唔認識或者好耐冇用嘅。刪唔到嘅陌生 App，可能拎咗裝置管理員權限，要先喺上一項取消。',
+      h_a_g2fa_t: 'Google 帳戶開啟兩步驗證',
+      h_a_g2fa_d: '設定 → Google → 管理你的 Google 帳戶 → 安全性 → 兩步驗證。加埋密碼金鑰（passkey）同備用電話號碼。',
+      h_a_pwmanager_t: '每個網站用唔同密碼',
+      h_a_pwmanager_d: '用內置嘅 Google 密碼管理工具，或者 1Password、Bitwarden 等。重用密碼係帳戶被盜最常見原因。',
+      h_a_checkup_t: '做一次 Google 密碼檢查',
+      h_a_checkup_d: '設定 → Google → 自動填入 → Google 密碼管理工具 → 密碼檢查。逐個更換被洩漏、重複或者太弱嘅密碼。',
+      h_a_backup_t: '開啟 Google 備份',
+      h_a_backup_d: '設定 → Google → 備份（或 設定 → 系統 → 備份），確認「Google One 備份」已開。萬一遺失或者要重設部機，可以還原。',
+      h_a_chrome_t: 'Chrome 開啟安全瀏覽',
+      h_a_chrome_d: 'Chrome → ⋮ → 設定 → 私隱與安全 → 安全瀏覽，揀「加強保護」或至少「標準保護」。',
+      h_a_spam_t: '開啟垃圾短訊同來電過濾',
+      h_a_spam_d: 'Google 訊息 → 頭像 → 訊息設定 → 垃圾訊息防護，開啟。電話 App → 設定 → 來電顯示與垃圾來電，開啟。Samsung 用家喺各自 App 嘅設定入面搵「封鎖號碼與垃圾訊息」。',
+      h_a_wifi_t: '唔好自動連公共 Wi-Fi',
+      h_a_wifi_d: '設定 → 網絡和互聯網 → Wi-Fi，公共網絡關閉「自動連線」；網絡詳情入面私隱設定揀「使用隨機 MAC」。',
+      h_a_perms_t: '檢查 App 權限',
+      h_a_perms_d: '設定 → 保安與私隱 → 私隱 → 權限管理員，逐項（位置、相機、麥克風、相片）睇邊啲 App 有權限，唔需要就關。',
+      h_a_advanced_t: '（選用）高風險人士可開進階保護',
+      h_a_advanced_d: 'Android 16 或以上：設定 → 保安與私隱 → 進階保護。會限制安裝 App 等功能，只適合成為針對性攻擊目標嘅人，一般人唔需要。',
       h_update_t: 'iOS 保持最新',
       h_update_d: '設定 → 一般 → 軟件更新，開啟「自動更新」。大部分入侵都係利用已修補嘅舊漏洞。',
       h_passcode_t: '用 6 位或以上嘅密碼',
@@ -189,9 +242,9 @@
       h_lockdown_d: '設定 → 私隱與保安 → 鎖定模式。會限制好多功能，只適合成為針對性攻擊目標嘅人，一般人唔需要。',
 
       ab_h: '關於 ShieldLite',
-      ab_what: '針對 iPhone 用戶最常見嘅威脅而做：釣魚短訊、洩漏密碼同保安設定疏忽。輕量、免安裝、資料留喺本機。',
+      ab_what: '針對 iPhone 同 Android 用戶最常見嘅威脅而做：釣魚短訊、假 App、洩漏密碼同保安設定疏忽。輕量、免安裝、資料留喺本機。',
       ab_cant_h: '做唔到嘅嘢',
-      ab_cant1: 'iOS 唔容許任何 App 掃描其他 App 或系統檔案，所以呢個唔係傳統防毒，亦冇可能做到。',
+      ab_cant1: '網頁冇權掃描手機入面嘅 App 或系統檔案，所以呢個唔係傳統防毒。iPhone 連原生 App 都唔可以咁做；Android 請用內置嘅 Play Protect。',
       ab_cant2: '網頁版讀唔到你部機嘅系統設定，所以「健檢」係自我檢查清單。',
       ab_cant3: '短網址無法喺本機展開，要用信譽服務或者問寄件人。',
       ab_net_h: '會連去邊度',
@@ -220,7 +273,7 @@
       ab_save: '儲存設定',
       ab_saved: '已儲存',
       ab_install_h: '加入主畫面',
-      ab_install_p: '喺 Safari 開啟呢個網址，撳分享按鈕，揀「加入主畫面」。',
+      ab_install_p: 'iPhone：喺 Safari 開啟呢個網址，撳分享按鈕，揀「加入主畫面」。Android：喺 Chrome 撳 ⋮，揀「安裝應用程式」或「加至主畫面」。',
       ab_data_h: '本機資料',
       ab_clear: '清除所有本機資料',
       ab_clear_confirm: '會清除健檢進度、語言同 Safe Browsing 設定。確定？',
@@ -234,6 +287,7 @@
       paste: 'Paste', copy: 'Copy', copied: 'Copied', clear: 'Clear', show: 'Show', hide: 'Hide',
       inst_t: 'Add to Home Screen',
       inst_d: 'In Safari, tap Share, then Add to Home Screen. It opens like an app and link analysis works offline.',
+      inst_d_android: 'In Chrome, tap ⋮ at the top right, then Install app or Add to Home screen. It opens like an app and link analysis works offline.',
       inst_close: 'Got it',
 
       link_h: 'Check a link',
@@ -316,7 +370,8 @@
       email_p: "Email breach lookups need a login or a paid API, so this tool doesn't do it directly. Use the official Have I Been Pwned site, which only receives the address you type there.",
       email_btn: 'Open Have I Been Pwned',
 
-      hl_h: 'iPhone security checkup',
+      hl_h: 'iPhone security checkup', hl_h_android: 'Android security checkup',
+      plat_label: 'Choose phone type',
       hl_lede: "A web page can't read your phone's system settings, so this is a self-check list. Open each setting, look, then tick it off.",
       hl_score: 'Security score',
       hl_good: 'Looking good', hl_ok: 'Decent, room to improve', hl_low: 'Needs work',
@@ -324,6 +379,7 @@
       hl_all: 'Everything done. Keep it up.',
       hl_reset: 'Reset checklist',
       hl_note: 'Menu names can differ slightly between iOS versions. Progress is stored only on this device.',
+      hl_note_android: "Menu names vary by brand (Samsung, Pixel, Xiaomi…) and Android version. If you can't find one, use the search in Settings. Progress is stored only on this device.",
       hl_must: 'Key',
       hl_env_https: 'Secure connection (HTTPS)', hl_env_app: 'On Home Screen', hl_env_net: 'Online',
       v_h: 'Version check',
@@ -356,6 +412,56 @@
       v_how_other: "Check for updates in the browser's Settings → About.",
       v_foot: (d) => `Version data updated ${d}. Results are worked out from what your browser reports and may not be exact.`,
       g_device: 'Device', g_account: 'Accounts and passwords', g_net: 'Network and messages', g_privacy: 'Privacy',
+      p_h: 'Security update date',
+      p_how: "A web page can't read this date. Go to Settings → About phone → Android version → Android security update (Samsung: Settings → About phone → Software information → Android security patch level), then pick the month below.",
+      p_label: 'Android security update month',
+      p_device: (v) => `Detected: ${v}`,
+      p_see: 'What we see', p_should: 'Should be', p_why: 'Why it matters',
+      p_have: (ym, n) => n === 0 ? `${ym} (this month)` : `${ym} (${n} month${n > 1 ? 's' : ''} old)`,
+      p_want: 'Within the last 1–2 months',
+      p_s_ok: 'Still updated', p_s_caution: 'Getting old', p_s_high: 'Possibly unsupported',
+      p_why_ok: 'Google releases security fixes every month, and your phone is still getting them.',
+      p_why_caution: "No security update for 3+ months. Check Software update for one to install. If there's none, the maker may be winding down support.",
+      p_why_high: 'No security update for over 6 months, so the phone is likely no longer supported. Use a phone that still gets updates for banking and payments.',
+      p_kev: 'Recently exploited Android flaws:',
+      p_clear: 'Clear',
+      g_a_device: 'Device', g_a_apps: 'Apps and malware', g_a_account: 'Accounts and passwords', g_a_net: 'Network and messages',
+      h_a_update_t: 'Keep system and security updates current',
+      h_a_update_d: 'Settings → System → Software update (Samsung: Settings → Software update). Also Settings → Security & privacy → System & updates → Google Play system update.',
+      h_a_lock_t: 'Use a 6-digit or longer PIN or password',
+      h_a_lock_d: 'Settings → Security & privacy → Device unlock → Screen lock. Avoid pattern locks: they are easy to spot over your shoulder.',
+      h_a_theft_t: 'Turn on Theft protection',
+      h_a_theft_d: 'Settings → Google → All services → Theft protection. Turn on Theft Detection Lock and Offline Device Lock, so a snatched phone locks itself.',
+      h_a_find_t: 'Turn on Find My Device',
+      h_a_find_d: 'Settings → Google → All services → Find My Device, and check it is on. Samsung users can also turn on SmartThings Find.',
+      h_a_sideload_t: "Don't install APKs from unknown sources",
+      h_a_sideload_d: 'Settings → Apps → Special app access → Install unknown apps, and set every app to Not allowed. Scammers often push APKs over WhatsApp, text or fake support calls. Real apps are on the Play Store.',
+      h_a_protect_t: 'Turn on Google Play Protect',
+      h_a_protect_d: 'Play Store → your profile picture → Play Protect → ⚙ settings, and turn on Scan apps with Play Protect. Tap Scan once while you are there.',
+      h_a_access_t: 'Check Accessibility access',
+      h_a_access_d: "Settings → Accessibility → Downloaded apps (or Installed services). Turn off everything you don't recognise and need (a password manager is fine). Malicious apps use this to watch your screen and tap for you, to steal bank codes.",
+      h_a_admin_t: 'Check device admin apps and SMS access',
+      h_a_admin_d: 'Settings → Security & privacy → More security settings → Device admin apps. Keep only ones you know, like Find My Device. Then Settings → Privacy → Permission manager → SMS to see which apps can read your texts.',
+      h_a_apps_t: "Delete apps you don't use or don't recognise",
+      h_a_apps_d: "Settings → Apps. Go through the list and delete unknown or long-unused apps. An unknown app that won't uninstall may hold device admin rights: remove those first.",
+      h_a_g2fa_t: 'Turn on 2-Step Verification for Google',
+      h_a_g2fa_d: 'Settings → Google → Manage your Google Account → Security → 2-Step Verification. Add a passkey and a backup phone number too.',
+      h_a_pwmanager_t: 'Use a different password for every site',
+      h_a_pwmanager_d: 'Use the built-in Google Password Manager, or 1Password, Bitwarden and the like. Reused passwords are the most common way accounts get taken over.',
+      h_a_checkup_t: 'Run Google Password Checkup',
+      h_a_checkup_d: 'Settings → Google → Autofill → Google Password Manager → Password Checkup. Change every leaked, reused or weak password it lists.',
+      h_a_backup_t: 'Turn on Google backup',
+      h_a_backup_d: 'Settings → Google → Backup (or Settings → System → Backup) and check Backup by Google One is on, so you can restore after a loss or reset.',
+      h_a_chrome_t: 'Turn on Safe Browsing in Chrome',
+      h_a_chrome_d: 'Chrome → ⋮ → Settings → Privacy and security → Safe Browsing, and choose Enhanced protection or at least Standard protection.',
+      h_a_spam_t: 'Turn on spam text and call filtering',
+      h_a_spam_d: "Google Messages → profile picture → Messages settings → Spam protection, on. Phone app → Settings → Caller ID & spam, on. On Samsung, look for Block numbers and spam in each app's settings.",
+      h_a_wifi_t: "Don't auto-join public Wi-Fi",
+      h_a_wifi_d: 'Settings → Network & internet → Wi-Fi. Turn off Auto-connect for public networks, and under each network’s privacy setting choose Use randomized MAC.',
+      h_a_perms_t: 'Review app permissions',
+      h_a_perms_d: "Settings → Security & privacy → Privacy → Permission manager. Go through location, camera, microphone and photos and switch off what apps don't need.",
+      h_a_advanced_t: '(Optional) Advanced Protection for high-risk people',
+      h_a_advanced_d: "Android 16 or later: Settings → Security & privacy → Advanced Protection. It limits features such as app installs, so it's only for people likely to be targeted. Most people don't need it.",
       h_update_t: 'Keep iOS up to date',
       h_update_d: 'Settings → General → Software Update, turn on Automatic Updates. Most attacks use old, already-patched bugs.',
       h_passcode_t: 'Use a 6-digit or longer passcode',
@@ -388,9 +494,9 @@
       h_lockdown_d: 'Settings → Privacy & Security → Lockdown Mode. It limits many features and only suits people who may be targeted individually. Most people do not need it.',
 
       ab_h: 'About ShieldLite',
-      ab_what: 'Built for the threats iPhone users meet most: phishing texts, leaked passwords and neglected security settings. Lightweight, no install, data stays on your device.',
+      ab_what: 'Built for the threats iPhone and Android users meet most: phishing texts, fake apps, leaked passwords and neglected security settings. Lightweight, no install, data stays on your device.',
       ab_cant_h: "What it can't do",
-      ab_cant1: "iOS doesn't let any app scan other apps or system files, so this is not a traditional antivirus and can't be.",
+      ab_cant1: "A web page can't scan the apps or system files on your phone, so this is not a traditional antivirus. On iPhone not even native apps can; on Android use the built-in Play Protect.",
       ab_cant2: "A web app can't read your phone's system settings, so the Checkup is a self-check list.",
       ab_cant3: "Short links can't be expanded on-device. Use a reputation service or ask the sender.",
       ab_net_h: 'What it connects to',
@@ -419,7 +525,7 @@
       ab_save: 'Save settings',
       ab_saved: 'Saved',
       ab_install_h: 'Add to Home Screen',
-      ab_install_p: 'Open this address in Safari, tap Share, then Add to Home Screen.',
+      ab_install_p: 'iPhone: open this address in Safari, tap Share, then Add to Home Screen. Android: in Chrome tap ⋮, then Install app or Add to Home screen.',
       ab_data_h: 'Data on this device',
       ab_clear: 'Clear all local data',
       ab_clear_confirm: 'This clears checklist progress, language and Safe Browsing settings. Continue?',
@@ -627,12 +733,23 @@
   }
 
   /* ------------------------------- health tab ------------------------------ */
-  const HEALTH = [
+  const HEALTH_IOS = [
     { g: 'g_device', items: [['update', 3], ['passcode', 3], ['sdp', 3], ['findmy', 2], ['profiles', 2]] },
     { g: 'g_account', items: [['apple2fa', 3], ['pwmanager', 2], ['pwrecs', 2], ['backup', 1]] },
     { g: 'g_net', items: [['safari', 2], ['unknown', 2], ['wifi', 1]] },
     { g: 'g_privacy', items: [['perms', 2], ['apps', 1], ['lockdown', 0]] }
   ];
+  // Android ids start with "a_" so both checklists can share one saved progress object.
+  const HEALTH_ANDROID = [
+    { g: 'g_a_device', items: [['a_update', 3], ['a_lock', 3], ['a_theft', 2], ['a_find', 2]] },
+    { g: 'g_a_apps', items: [['a_sideload', 3], ['a_protect', 3], ['a_access', 3], ['a_admin', 2], ['a_apps', 1]] },
+    { g: 'g_a_account', items: [['a_g2fa', 3], ['a_pwmanager', 2], ['a_checkup', 2], ['a_backup', 1]] },
+    { g: 'g_a_net', items: [['a_chrome', 2], ['a_spam', 2], ['a_wifi', 1]] },
+    { g: 'g_privacy', items: [['a_perms', 2], ['a_advanced', 0]] }
+  ];
+  const IS_ANDROID = /Android/i.test(navigator.userAgent);
+  let plat = store.get('plat', IS_ANDROID ? 'android' : 'ios');
+  const healthGroups = () => (plat === 'android' ? HEALTH_ANDROID : HEALTH_IOS);
   let health = store.get('health', {});
   const openItems = new Set();
 
@@ -654,8 +771,17 @@
   }
 
   function renderHealth() {
+    $('#hlTitle').textContent = t(plat === 'android' ? 'hl_h_android' : 'hl_h');
+    $('#hlNote').textContent = t(plat === 'android' ? 'hl_note_android' : 'hl_note');
+    $$('.seg-btn').forEach((b) => {
+      const on = b.dataset.plat === plat;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-checked', String(on));
+    });
+    renderPatch();
+
     let total = 0, got = 0, next = null;
-    HEALTH.forEach((grp) => grp.items.forEach(([id, w]) => {
+    healthGroups().forEach((grp) => grp.items.forEach(([id, w]) => {
       total += w;
       if (health[id]) got += w;
       else if (w > 0 && (!next || w > next.w)) next = { id, w };
@@ -676,7 +802,7 @@
 
     const list = $('#healthList');
     list.replaceChildren();
-    HEALTH.forEach((grp) => {
+    healthGroups().forEach((grp) => {
       const g = el('div', { class: 'group' }, el('h2', null, t(grp.g)));
       grp.items.forEach(([id, w]) => {
         const open = openItems.has(id);
@@ -700,6 +826,44 @@
     });
   }
 
+  /* ------------------------ Android security patch ------------------------ */
+  let androidInfo = null; // { version, model } from client hints, Android Chrome only
+
+  function renderPatch() {
+    const box = $('#patchCard');
+    if (!box) return;
+    box.hidden = plat !== 'android';
+    if (box.hidden) return;
+
+    const now = new Date();
+    const thisMonth = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+    const val = store.get('patch', '');
+    const input = el('input', { type: 'month', id: 'patchInput', class: 'plainfield', value: val || null, max: thisMonth, placeholder: 'YYYY-MM', 'aria-label': t('p_label') });
+    input.addEventListener('change', () => { store.set('patch', input.value.trim()); renderPatch(); });
+    const clear = val ? el('button', { type: 'button', class: 'btn ghost', onclick: () => { store.set('patch', ''); renderPatch(); } }, t('p_clear')) : null;
+
+    const parts = [el('h2', null, t('p_h')), el('p', { class: 'fine' }, t('p_how'))];
+    if (androidInfo && androidInfo.version) {
+      parts.push(el('p', { class: 'fine' }, t('p_device', ['Android ' + androidInfo.version, androidInfo.model].filter(Boolean).join(' · '))));
+    }
+    parts.push(el('div', { class: 'row patchrow' }, input, clear));
+
+    const r = C.assessPatch(val, now);
+    if (r) {
+      const kev = (verData && verData.kev && verData.kev.android) || [];
+      const pill = { ok: 'ok', caution: 'caution', high: 'high' }[r.status];
+      parts.push(el('div', { class: 'block' },
+        el('div', { class: 'vrow' },
+          el('div', { class: 'vhead' }, el('b', null, t('p_label')), el('span', { class: 'vpill p-' + pill }, t('p_s_' + r.status))),
+          el('dl', { class: 'vlist' },
+            el('dt', null, t('p_see')), el('dd', { class: 'mono' }, t('p_have', val.slice(0, 7), r.months)),
+            el('dt', null, t('p_should')), el('dd', null, t('p_want')),
+            el('dt', null, t('p_why')), el('dd', null, t('p_why_' + r.status),
+              r.status !== 'ok' && kev.length ? el('span', { class: 'kev' }, t('p_kev'), ' ', kev.slice(0, 2).map((k) => t('v_kev_item', k.cve, k.date)).join(lang === 'zh' ? '、' : ', ')) : null)))));
+    }
+    box.replaceChildren(...parts);
+  }
+
   /* ---------------------------- version check ---------------------------- */
   let verData = null;
   let verClient = null;
@@ -712,8 +876,12 @@
     try {
       // Chrome hides its full version in the UA; client hints give the exact build.
       if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
-        const h = await navigator.userAgentData.getHighEntropyValues(['fullVersionList']);
+        const h = await navigator.userAgentData.getHighEntropyValues(['fullVersionList', 'platformVersion', 'model']);
         hints.fullVersionList = h.fullVersionList;
+        // Android's UA always says "Android 10; K"; hints give the real version and model.
+        if (h.platform === 'Android' && h.platformVersion) {
+          androidInfo = { version: h.platformVersion.replace(/(\.0)+$/, ''), model: h.model || '' };
+        }
       }
     } catch (e) { /* hints are optional */ }
     verClient = C.detectClient(navigator.userAgent, hints);
@@ -722,6 +890,7 @@
       if (!res.ok) throw new Error('HTTP ' + res.status);
       verData = await res.json();
       verState = 'ready';
+      renderPatch(); // shows recent Android CVEs once data is in
     } catch (e) {
       verState = 'error';
     }
@@ -798,6 +967,8 @@
     document.documentElement.lang = lang === 'zh' ? 'zh-Hant-HK' : 'en';
     $$('[data-i18n]').forEach((n) => { n.textContent = t(n.getAttribute('data-i18n')); });
     $$('[data-i18n-ph]').forEach((n) => { n.setAttribute('placeholder', t(n.getAttribute('data-i18n-ph'))); });
+    $$('[data-i18n-aria]').forEach((n) => { n.setAttribute('aria-label', t(n.getAttribute('data-i18n-aria'))); });
+    $('#instText').textContent = t(IS_ANDROID ? 'inst_d_android' : 'inst_d');
     $('#langBtn').textContent = lang === 'zh' ? 'EN' : '中';
     $('#langBtn').setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切換至中文');
     $('#pwToggle').textContent = $('#pwInput').type === 'password' ? t('show') : t('hide');
@@ -831,7 +1002,19 @@
     $('#genNew').addEventListener('click', regenerate);
     $('#genCopy').addEventListener('click', () => copyText(generated));
 
-    $('#healthReset').addEventListener('click', () => { health = {}; store.set('health', health); renderHealth(); });
+    // Reset only the checklist on screen; the other phone's progress stays.
+    $('#healthReset').addEventListener('click', () => {
+      healthGroups().forEach((grp) => grp.items.forEach(([id]) => { delete health[id]; }));
+      store.set('health', health);
+      if (plat === 'android') store.set('patch', '');
+      renderHealth();
+    });
+    $$('.seg-btn').forEach((b) => b.addEventListener('click', () => {
+      plat = b.dataset.plat;
+      store.set('plat', plat);
+      openItems.clear();
+      renderHealth();
+    }));
 
     $('#sbOn').checked = !!store.get('sbOn', false);
     $('#sbKey').value = store.get('sbKey', '');
@@ -871,7 +1054,7 @@
 
     const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     const standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
-    if (ios && !standalone && !store.get('instDismissed', false)) $('#installHint').hidden = false;
+    if ((ios || IS_ANDROID) && !standalone && !store.get('instDismissed', false)) $('#installHint').hidden = false;
     $('#installClose').addEventListener('click', () => { $('#installHint').hidden = true; store.set('instDismissed', true); });
 
     window.addEventListener('online', renderHealth);
