@@ -127,6 +127,35 @@
       hl_note: '選單名稱可能因 iOS 版本略有不同。清單進度只儲存喺你部機。',
       hl_must: '重要',
       hl_env_https: '安全連線（HTTPS）', hl_env_app: '已加入主畫面', hl_env_net: '有網絡',
+      v_h: '版本檢查',
+      v_loading: '檢查緊你嘅系統同瀏覽器版本…',
+      v_err: '暫時攞唔到最新版本資料，請稍後再試，或者直接去設定檢查更新。',
+      v_see: '我哋見到', v_should: '應該係', v_why: '點解要理', v_how: '點樣更新',
+      v_unknown: '讀唔到版本號',
+      v_t_ios: 'iOS 系統', v_t_chrome_ios: 'iPhone 上嘅 Chrome',
+      v_t_chrome: (p) => `Chrome（${p}）`, v_t_browser: (b) => b,
+      v_s_ok: '已係最新', v_s_patch: '有小更新', v_s_behind: '版本過舊', v_s_check: '請手動確認',
+      v_s_oldbranch: '舊系列，仍有修補', v_s_nodata: '未有資料', v_s_unsupported: '未支援自動檢查',
+      v_want_ios: (v) => `iOS ${v} 或以上`,
+      v_want_chrome: (min, latest) => min === latest ? `${latest} 或以上` : `${min} 或以上（最新 ${latest}）`,
+      v_want_none: '—',
+      v_why_ok: '保持開住自動更新就得。',
+      v_why_patch: '同一個大版本入面有較新嘅修補版，入面通常係保安修補。',
+      v_why_behind: (n) => n > 0 ? `落後 ${n} 個大版本。舊版本嘅漏洞已經公開，攻擊者可以直接利用。` : '舊版本嘅漏洞已經公開，攻擊者可以直接利用。',
+      v_why_check_ios: (have, latest) => have ? `瀏覽器只會透露大概嘅版本號（${have}），分唔到你有冇裝 ${latest} 呢類小更新，要你自己去設定確認。` : '用呢個瀏覽器讀唔到 iOS 版本，要你自己去設定確認。用 Safari 開呢頁就可以自動檢查。',
+      v_why_check_chrome: 'Chrome 只會透露大版本號，分唔到已修補同未修補嘅 build，要你自己去設定確認。',
+      v_why_oldbranch: (v) => `你部機用緊較舊嘅 iOS 系列，Apple 仍然有提供修補（呢個系列最新係 ${v}）。如果部機支援新系列，建議升級。`,
+      v_why_nodata: '暫時未有呢個平台嘅版本資料。',
+      v_why_unsupported: '暫時只支援自動檢查 Chrome 同 iOS。',
+      v_why_chrome_ios: 'iPhone 上嘅 Chrome 其實用 Apple 嘅引擎，網頁漏洞主要靠 iOS 更新修補；App 本身都應該保持最新。',
+      v_kev: '近期已被利用嘅漏洞：',
+      v_kev_item: (cve, d) => `${cve}（${d} 列入 CISA 清單）`,
+      v_how_ios: '設定 → 一般 → 軟件更新。',
+      v_how_chrome_ios: 'App Store → 撳右上角頭像 → 更新 Chrome。',
+      v_how_android: 'Play 商店 → 搜尋 Chrome → 更新，之後重新開 Chrome。',
+      v_how_desktop: '網址列輸入 chrome://settings/help，等佢更新完，撳「重新啟動」。',
+      v_how_other: '去瀏覽器嘅「設定 → 關於」檢查更新。',
+      v_foot: (d) => `版本資料更新於 ${d}。結果係由瀏覽器提供嘅資料推算，未必百分百準確。`,
       g_device: '裝置', g_account: '帳戶同密碼', g_net: '網絡同訊息', g_privacy: '私隱',
       h_update_t: 'iOS 保持最新',
       h_update_d: '設定 → 一般 → 軟件更新，開啟「自動更新」。大部分入侵都係利用已修補嘅舊漏洞。',
@@ -169,6 +198,7 @@
       ab_net1: '連結分析：預設完全喺本機，唔會傳送任何資料。',
       ab_net2: '密碼檢查：只傳送雜湊值頭 5 個字元去 api.pwnedpasswords.com。',
       ab_net3: 'Safe Browsing：你自己開啟並提供 API Key 先會將連結傳去 Google。',
+      ab_net4: '版本檢查：只會由本網站讀取一份公開嘅版本清單（versions.json），版本比較喺你部機進行，唔會傳送任何資料。',
       ab_sb_h: 'Google Safe Browsing（選用）',
       ab_sb_p: 'Safe Browsing 可以額外查 Google 嘅黑名單。你需要自己申請免費 API Key，只供個人非商業用途（商業用途要用 Google Web Risk）。Key 只儲存喺呢部機。',
       ab_sb_s1: '用 Google 帳戶登入 Google Cloud Console，建立一個項目（或者揀現有嘅）。',
@@ -296,6 +326,35 @@
       hl_note: 'Menu names can differ slightly between iOS versions. Progress is stored only on this device.',
       hl_must: 'Key',
       hl_env_https: 'Secure connection (HTTPS)', hl_env_app: 'On Home Screen', hl_env_net: 'Online',
+      v_h: 'Version check',
+      v_loading: 'Checking your system and browser versions…',
+      v_err: "Couldn't load the latest version data. Try again later, or check for updates in Settings.",
+      v_see: 'What we see', v_should: 'Should be', v_why: 'Why it matters', v_how: 'How to update',
+      v_unknown: "Can't read the version",
+      v_t_ios: 'iOS', v_t_chrome_ios: 'Chrome on iPhone',
+      v_t_chrome: (p) => `Chrome (${p})`, v_t_browser: (b) => b,
+      v_s_ok: 'Up to date', v_s_patch: 'Minor update', v_s_behind: 'Out of date', v_s_check: 'Check by hand',
+      v_s_oldbranch: 'Older series, still patched', v_s_nodata: 'No data yet', v_s_unsupported: 'Not checked',
+      v_want_ios: (v) => `iOS ${v} or later`,
+      v_want_chrome: (min, latest) => min === latest ? `${latest} or later` : `${min} or later (newest ${latest})`,
+      v_want_none: '—',
+      v_why_ok: 'Keep automatic updates on.',
+      v_why_patch: 'A newer build of the same version is out. These are usually security fixes.',
+      v_why_behind: (n) => n > 0 ? `${n} major version${n > 1 ? 's' : ''} behind. Bugs in old versions are public and attackers use them.` : 'Bugs in old versions are public and attackers use them.',
+      v_why_check_ios: (have, latest) => have ? `The browser only reveals the rough version (${have}), so we can't tell whether you have small updates like ${latest}. Check in Settings.` : "This browser doesn't reveal your iOS version. Check in Settings, or open this page in Safari for an automatic check.",
+      v_why_check_chrome: "Chrome only reveals its major version, so we can't tell a patched build from an unpatched one. Check in Settings.",
+      v_why_oldbranch: (v) => `Your phone is on an older iOS series that Apple still patches (newest in this series: ${v}). Upgrade if your phone supports the newer series.`,
+      v_why_nodata: "We don't have version data for this platform yet.",
+      v_why_unsupported: 'Automatic checks cover Chrome and iOS for now.',
+      v_why_chrome_ios: "Chrome on iPhone uses Apple's engine, so web security fixes mostly come with iOS updates. Keep the app updated too.",
+      v_kev: 'Recently exploited flaws:',
+      v_kev_item: (cve, d) => `${cve} (added to CISA list ${d})`,
+      v_how_ios: 'Settings → General → Software Update.',
+      v_how_chrome_ios: 'App Store → tap your profile picture → update Chrome.',
+      v_how_android: 'Play Store → search Chrome → Update, then reopen Chrome.',
+      v_how_desktop: 'Type chrome://settings/help in the address bar, let it update, then tap Relaunch.',
+      v_how_other: "Check for updates in the browser's Settings → About.",
+      v_foot: (d) => `Version data updated ${d}. Results are worked out from what your browser reports and may not be exact.`,
       g_device: 'Device', g_account: 'Accounts and passwords', g_net: 'Network and messages', g_privacy: 'Privacy',
       h_update_t: 'Keep iOS up to date',
       h_update_d: 'Settings → General → Software Update, turn on Automatic Updates. Most attacks use old, already-patched bugs.',
@@ -338,6 +397,7 @@
       ab_net1: 'Link analysis: fully on-device by default. Nothing is sent.',
       ab_net2: 'Password check: only the first 5 characters of the hash go to api.pwnedpasswords.com.',
       ab_net3: 'Safe Browsing: links go to Google only if you turn it on and supply your own API key.',
+      ab_net4: 'Version check: reads a public version list (versions.json) from this site. The comparison runs on your device and nothing is sent.',
       ab_sb_h: 'Google Safe Browsing (optional)',
       ab_sb_p: 'Safe Browsing can also check Google\'s blocklist. You need your own free API key, for personal non-commercial use only (commercial use needs Google Web Risk). The key is stored only on this device.',
       ab_sb_s1: 'Sign in to Google Cloud Console with a Google account and create a project (or pick an existing one).',
@@ -640,6 +700,99 @@
     });
   }
 
+  /* ---------------------------- version check ---------------------------- */
+  let verData = null;
+  let verClient = null;
+  let verState = 'loading';
+  const PLATFORM = { win: 'Windows', mac: 'Mac', linux: 'Linux', android: 'Android', chromeos: 'ChromeOS', ios: 'iOS', other: '' };
+  const BROWSER = { safari: 'Safari', chrome: 'Chrome', edge: 'Microsoft Edge', firefox: 'Firefox', opera: 'Opera', samsung: 'Samsung Internet', other: '' };
+
+  async function loadVersions() {
+    const hints = { touchPoints: navigator.maxTouchPoints || 0 };
+    try {
+      // Chrome hides its full version in the UA; client hints give the exact build.
+      if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+        const h = await navigator.userAgentData.getHighEntropyValues(['fullVersionList']);
+        hints.fullVersionList = h.fullVersionList;
+      }
+    } catch (e) { /* hints are optional */ }
+    verClient = C.detectClient(navigator.userAgent, hints);
+    try {
+      const res = await fetch('versions.json', { cache: 'no-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      verData = await res.json();
+      verState = 'ready';
+    } catch (e) {
+      verState = 'error';
+    }
+    renderVersions();
+  }
+
+  function verTitle(r) {
+    if (r.id === 'ios') return t('v_t_ios');
+    if (r.id === 'chrome_ios') return t('v_t_chrome_ios');
+    if (r.id === 'chrome') return t('v_t_chrome', PLATFORM[r.platform] || '');
+    const b = BROWSER[r.browser] || navigator.userAgent.slice(0, 30);
+    return t('v_t_browser', [b, PLATFORM[r.platform]].filter(Boolean).join(' · '));
+  }
+
+  function verWant(r) {
+    if (r.id === 'ios' && r.latest) return t('v_want_ios', r.status === 'oldbranch' ? r.branchLatest : r.latest);
+    if ((r.id === 'chrome' || r.id === 'chrome_ios') && r.latest) {
+      const key = r.id === 'chrome_ios' ? 'ios' : { chromeos: 'linux' }[r.platform] || r.platform;
+      const ch = (verData && verData.chrome && verData.chrome[key]) || {};
+      const min = typeof ch === 'string' ? ch : ch.min || r.latest;
+      return t('v_want_chrome', min, r.latest);
+    }
+    return t('v_want_none');
+  }
+
+  function verWhy(r) {
+    if (r.id === 'chrome_ios' && r.status === 'ok') return t('v_why_chrome_ios');
+    switch (r.status) {
+      case 'ok': return t('v_why_ok');
+      case 'patch': return t('v_why_patch');
+      case 'behind': return t('v_why_behind', r.behindMajor || 0);
+      case 'check': return r.id === 'ios' ? t('v_why_check_ios', r.have, r.latest) : t('v_why_check_chrome');
+      case 'oldbranch': return t('v_why_oldbranch', r.branchLatest);
+      case 'nodata': return t('v_why_nodata');
+      default: return t('v_why_unsupported');
+    }
+  }
+
+  function verHow(r) {
+    if (r.id === 'ios') return t('v_how_ios');
+    if (r.id === 'chrome_ios') return t('v_how_chrome_ios');
+    if (r.id === 'chrome') return r.platform === 'android' ? t('v_how_android') : t('v_how_desktop');
+    return t('v_how_other');
+  }
+
+  const PILL = { ok: 'ok', patch: 'caution', behind: 'high', check: 'caution', oldbranch: 'caution', nodata: 'muted', unsupported: 'muted' };
+
+  function renderVersions() {
+    const box = $('#verCard');
+    if (!box) return;
+    const head = el('h2', null, t('v_h'));
+    if (verState === 'loading') { box.replaceChildren(head, el('p', { class: 'fine' }, t('v_loading'))); return; }
+    if (verState === 'error' || !verClient) { box.replaceChildren(head, el('div', { class: 'note' }, t('v_err'))); return; }
+
+    const rows = C.assessClient(verClient, verData).map((r) => {
+      const showKev = ['behind', 'patch', 'check'].includes(r.status) && r.kev && r.kev.length;
+      return el('div', { class: 'vrow' },
+        el('div', { class: 'vhead' },
+          el('b', null, verTitle(r)),
+          el('span', { class: 'vpill p-' + PILL[r.status] }, t('v_s_' + r.status))),
+        el('dl', { class: 'vlist' },
+          el('dt', null, t('v_see')), el('dd', { class: 'mono' }, r.have || t('v_unknown')),
+          el('dt', null, t('v_should')), el('dd', { class: 'mono' }, verWant(r)),
+          el('dt', null, t('v_why')), el('dd', null, verWhy(r),
+            showKev ? el('span', { class: 'kev' }, t('v_kev'), ' ', r.kev.slice(0, 2).map((k) => t('v_kev_item', k.cve, k.date)).join(lang === 'zh' ? '、' : ', ')) : null),
+          r.status !== 'ok' ? [el('dt', null, t('v_how')), el('dd', null, verHow(r))] : null));
+    });
+    const when = verData && verData.updated ? String(verData.updated).slice(0, 10) : '—';
+    box.replaceChildren(head, el('div', { class: 'block' }, rows), el('p', { class: 'fine' }, t('v_foot', when)));
+  }
+
   /* ----------------------------- language / static ----------------------------- */
   function applyLang() {
     document.documentElement.lang = lang === 'zh' ? 'zh-Hant-HK' : 'en';
@@ -648,7 +801,7 @@
     $('#langBtn').textContent = lang === 'zh' ? 'EN' : '中';
     $('#langBtn').setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切換至中文');
     $('#pwToggle').textContent = $('#pwInput').type === 'password' ? t('show') : t('hide');
-    renderLink(); renderPw(); renderStrength(); renderHealth();
+    renderLink(); renderPw(); renderStrength(); renderHealth(); renderVersions();
   }
 
   /* --------------------------------- init --------------------------------- */
@@ -726,6 +879,7 @@
 
     regenerate();
     applyLang();
+    loadVersions();
     const fromHash = location.hash.replace('#', '');
     showTab(TABS.includes(fromHash) ? fromHash : store.get('tab', 'link'));
 

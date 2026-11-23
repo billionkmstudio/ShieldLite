@@ -1,0 +1,35 @@
+name: Update versions.json
+
+on:
+  schedule:
+    - cron: '17 6 * * *'   # daily, 06:17 UTC
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/update-versions.mjs', '.github/workflows/versions.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: versions
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/test-update-versions.mjs
+      - run: node scripts/update-versions.mjs
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- versions.json; then echo "No change"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add versions.json
+          git commit -m "Update versions.json"
+          git push

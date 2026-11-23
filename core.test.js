@@ -133,5 +133,72 @@ const ids = (r) => r.findings.map((f) => f.id);
     assert.notEqual(C.generatePassword(24), C.generatePassword(24));
   });
 
+  // ---- version check ----
+  const DATA = {
+    chrome: { win: { latest: '158.0.8127.37', min: '157.0.8103.51' }, mac: '157.0.8103.51', linux: '157.0.8103.50', android: { latest: '157.0.8103.60', min: '157.0.8103.50' }, ios: '157.0.8103.40' },
+    ios: { branches: [{ latest: '26.1' }, { latest: '18.7.2' }] },
+    kev: { chromium: [{ cve: 'CVE-2026-125350' }], apple: [{ cve: 'CVE-2026-1' }] }
+  };
+  const UA = {
+    winChrome: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36',
+    androidChrome: 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36',
+    iosSafari26: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.1 Mobile/15E148 Safari/604.1',
+    iosSafari17: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
+    iosSafari18: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.7 Mobile/15E148 Safari/604.1',
+    iosChrome: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/155.0.7000.1 Mobile/15E148 Safari/604.1',
+    winEdge: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36 Edg/157.0.0.0',
+    macSafari: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.1 Safari/605.1.15'
+  };
+  const hints = (v) => ({ fullVersionList: [{ brand: 'Chromium', version: v }, { brand: 'Google Chrome', version: v }, { brand: 'Not?A_Brand', version: '99.0.0.0' }] });
+  const check = (ua, h) => C.assessClient(C.detectClient(ua, h), DATA);
+
+  ok('cmpVer', () => {
+    assert.equal(C.cmpVer('157.0.8103.50', '157.0.8103.51'), -1);
+    assert.equal(C.cmpVer('26.1', '26.1.0'), 0);
+    assert.equal(C.cmpVer('18.10', '18.9'), 1);
+  });
+  ok('desktop chrome with client hints: patched / unpatched', () => {
+    assert.equal(check(UA.winChrome, hints('157.0.8103.51'))[0].status, 'ok');
+    assert.equal(check(UA.winChrome, hints('157.0.8103.20'))[0].status, 'patch');
+    assert.equal(check(UA.winChrome, hints('156.0.7000.1'))[0].status, 'behind');
+    const r = check(UA.winChrome, hints('158.0.8127.37'))[0];
+    assert.equal(r.status, 'ok'); assert.equal(r.latest, '158.0.8127.37');
+  });
+  ok('desktop chrome without hints only knows major', () => {
+    const r = check(UA.winChrome)[0];
+    assert.equal(r.status, 'check'); assert.equal(r.full, false);
+  });
+  ok('old android chrome is behind even without hints', () => {
+    const r = check(UA.androidChrome)[0];
+    assert.equal(r.status, 'behind'); assert.equal(r.behindMajor, 2); assert.equal(r.platform, 'android');
+  });
+  ok('iOS 26 Safari reads version from Safari, not the frozen 18_6 token', () => {
+    const c = C.detectClient(UA.iosSafari26);
+    assert.equal(c.os, 'ios'); assert.equal(c.osVersion, '26.1');
+    assert.equal(C.assessClient(c, DATA)[0].status, 'ok');
+  });
+  ok('iOS 17 is behind; iOS 18.7 on the 18 branch is oldbranch', () => {
+    assert.equal(check(UA.iosSafari17)[0].status, 'behind');
+    const r = check(UA.iosSafari18)[0];
+    assert.equal(r.status, 'oldbranch'); assert.equal(r.branchLatest, '18.7.2');
+  });
+  ok('Chrome on iPhone: iOS unknown, app version compared', () => {
+    const r = check(UA.iosChrome);
+    assert.equal(r[0].id, 'ios'); assert.equal(r[0].status, 'check');
+    assert.equal(r[1].id, 'chrome_ios'); assert.equal(r[1].status, 'behind');
+  });
+  ok('iPad desktop UA detected as iOS via touch points', () => {
+    assert.equal(C.detectClient(UA.macSafari, { touchPoints: 5 }).os, 'ios');
+    assert.equal(C.detectClient(UA.macSafari).os, 'mac');
+  });
+  ok('Edge and Mac Safari are unsupported, not misread as Chrome', () => {
+    assert.equal(check(UA.winEdge)[0].status, 'unsupported');
+    assert.equal(check(UA.winEdge)[0].browser, 'edge');
+    assert.equal(check(UA.macSafari)[0].browser, 'safari');
+  });
+  ok('missing data gives nodata', () => {
+    assert.equal(C.assessClient(C.detectClient(UA.winChrome, hints('157.0.8103.51')), {})[0].status, 'nodata');
+  });
+
   console.log(`\n${n} checks passed`);
 })().catch((e) => { console.error(e); process.exit(1); });

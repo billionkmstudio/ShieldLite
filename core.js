@@ -479,8 +479,133 @@
     return (j.matches || []).map((m) => m.threatType);
   }
 
+  /* --------------------------- version check --------------------------- */
+  // Compare dotted versions numerically. Missing parts count as 0.
+  function cmpVer(a, b) {
+    const pa = String(a).split('.').map((x) => parseInt(x, 10) || 0);
+    const pb = String(b).split('.').map((x) => parseInt(x, 10) || 0);
+    for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+      const d = (pa[i] || 0) - (pb[i] || 0);
+      if (d) return d < 0 ? -1 : 1;
+    }
+    return 0;
+  }
+  const major = (v) => parseInt(String(v), 10) || 0;
+  const majorMinor = (v) => String(v).split('.').slice(0, 2).join('.');
+
+  // Work out OS and browser from the user-agent string plus optional client hints.
+  // hints: { touchPoints, fullVersionList: [{ brand, version }] } (Chromium only)
+  function detectClient(ua, hints) {
+    ua = String(ua || '');
+    hints = hints || {};
+    const c = { os: 'other', osVersion: null, browser: 'other', browserVersion: null, fullVersion: false, engine: 'other' };
+
+    const isIOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && (hints.touchPoints || 0) > 1);
+    if (isIOS) {
+      c.os = 'ios';
+      c.engine = 'webkit';
+      let m;
+      if ((m = ua.match(/CriOS\/([\d.]+)/))) { c.browser = 'chrome'; c.browserVersion = m[1]; c.fullVersion = true; }
+      else if ((m = ua.match(/EdgiOS\/([\d.]+)/))) { c.browser = 'edge'; c.browserVersion = m[1]; }
+      else if ((m = ua.match(/FxiOS\/([\d.]+)/))) { c.browser = 'firefox'; c.browserVersion = m[1]; }
+      else if (/Safari\//.test(ua) && (m = ua.match(/Version\/([\d.]+)/))) { c.browser = 'safari'; c.browserVersion = m[1]; }
+      // Safari's own version tracks iOS (Safari 26.1 ships with iOS 26.1). Newer Safari freezes the
+      // "OS 18_6" token, so only trust that token when it is not the frozen value.
+      if (c.browser === 'safari') c.osVersion = c.browserVersion;
+      else {
+        const om = ua.match(/OS (\d+)_(\d+)(?:_(\d+))? like Mac OS X/);
+        if (om && !(om[1] === '18' && om[2] === '6')) c.osVersion = [om[1], om[2], om[3]].filter(Boolean).join('.');
+      }
+      return c;
+    }
+
+    if (/Android/.test(ua)) c.os = 'android';
+    else if (/Windows NT/.test(ua)) c.os = 'win';
+    else if (/Macintosh|Mac OS X/.test(ua)) c.os = 'mac';
+    else if (/CrOS/.test(ua)) c.os = 'chromeos';
+    else if (/Linux/.test(ua)) c.os = 'linux';
+
+    let m;
+    if ((m = ua.match(/Edg(?:A)?\/([\d.]+)/))) { c.browser = 'edge'; c.browserVersion = m[1]; c.engine = 'blink'; }
+    else if ((m = ua.match(/OPR\/([\d.]+)/))) { c.browser = 'opera'; c.browserVersion = m[1]; c.engine = 'blink'; }
+    else if ((m = ua.match(/SamsungBrowser\/([\d.]+)/))) { c.browser = 'samsung'; c.browserVersion = m[1]; c.engine = 'blink'; }
+    else if ((m = ua.match(/Firefox\/([\d.]+)/))) { c.browser = 'firefox'; c.browserVersion = m[1]; c.engine = 'gecko'; }
+    else if ((m = ua.match(/Chrome\/([\d.]+)/))) { c.browser = 'chrome'; c.browserVersion = m[1]; c.engine = 'blink'; }
+    else if (/Safari\//.test(ua) && (m = ua.match(/Version\/([\d.]+)/))) { c.browser = 'safari'; c.browserVersion = m[1]; c.engine = 'webkit'; }
+
+    // Chrome's UA only says "157.0.0.0"; client hints give the real build.
+    if (c.browser === 'chrome' && Array.isArray(hints.fullVersionList)) {
+      const g = hints.fullVersionList.find((b) => b.brand === 'Google Chrome');
+      if (g && g.version) { c.browserVersion = g.version; c.fullVersion = true; }
+    } else if (c.browserVersion && !/^\d+\.0\.0\.0$/.test(c.browserVersion)) {
+      c.fullVersion = true;
+    }
+    if (c.browser === 'chrome' && c.browserVersion && /^\d+\.0\.0\.0$/.test(c.browserVersion)) c.fullVersion = false;
+    return c;
+  }
+
+  // versions.json stores { latest, min } per platform; accept a plain string too.
+  function chan(v) {
+    if (!v) return null;
+    if (typeof v === 'string') return { latest: v, min: v };
+    if (!v.latest) return null;
+    return { latest: v.latest, min: v.min || v.latest };
+  }
+
+  // Compare what we detected with versions.json. Returns a list of checks for the UI.
+  // status: ok | behind | patch | check (can't confirm, check by hand) | nodata | unsupported
+  function assessClient(c, data) {
+    data = data || {};
+    const out = [];
+    const chrome = data.chrome || {};
+    const kev = data.kev || {};
+
+    if (c.os === 'ios') {
+      const branches = (data.ios && data.ios.branches) || [];
+      const newest = branches.length ? branches.reduce((a, b) => (cmpVer(a.latest, b.latest) >= 0 ? a : b)) : null;
+      const r = { id: 'ios', have: c.osVersion, latest: newest && newest.latest, kev: kev.apple || [] };
+      if (!newest) r.status = 'nodata';
+      else if (!c.osVersion) r.status = 'check';
+      else {
+        const branch = branches.find((b) => major(b.latest) === major(c.osVersion));
+        // The UA only carries major.minor, so a matching major.minor still needs a hand check for x.y.z fixes.
+        if (cmpVer(majorMinor(c.osVersion), majorMinor(newest.latest)) >= 0) r.status = cmpVer(c.osVersion, newest.latest) >= 0 ? 'ok' : 'check';
+        else if (branch && cmpVer(majorMinor(c.osVersion), majorMinor(branch.latest)) >= 0) { r.status = 'oldbranch'; r.branchLatest = branch.latest; }
+        else r.status = 'behind';
+        // No count for iOS: Apple jumped from 18 to 26, so the gap in numbers means nothing.
+        r.behindMajor = 0;
+      }
+      out.push(r);
+      if (c.browser === 'chrome') {
+        const ch = chan(chrome.ios);
+        const b = { id: 'chrome_ios', have: c.browserVersion, latest: ch && ch.latest, kev: [] };
+        b.status = !ch ? 'nodata' : cmpVer(c.browserVersion, ch.min) >= 0 ? 'ok' : major(c.browserVersion) < major(ch.min) ? 'behind' : 'patch';
+        out.push(b);
+      }
+      return out;
+    }
+
+    if (c.browser === 'chrome') {
+      const key = { win: 'win', mac: 'mac', linux: 'linux', android: 'android', chromeos: 'linux' }[c.os];
+      const ch = key && chan(chrome[key]);
+      const r = { id: 'chrome', platform: c.os, have: c.browserVersion, latest: ch && ch.latest, full: c.fullVersion, kev: kev.chromium || [] };
+      // "min" is the oldest build Google is still rolling out: anything at or above it is current.
+      if (!ch) r.status = 'nodata';
+      else if (major(c.browserVersion) < major(ch.min)) r.status = 'behind';
+      else if (!c.fullVersion) r.status = 'check';
+      else r.status = cmpVer(c.browserVersion, ch.min) >= 0 ? 'ok' : 'patch';
+      r.behindMajor = ch ? Math.max(0, major(ch.latest) - major(c.browserVersion)) : 0;
+      out.push(r);
+      return out;
+    }
+
+    out.push({ id: 'browser', browser: c.browser, platform: c.os, have: c.browserVersion, status: 'unsupported', kev: c.engine === 'blink' ? (kev.chromium || []) : [] });
+    return out;
+  }
+
   return {
     analyzeUrl, defang, registrable, levenshtein, punyDecode, hostToUnicode,
-    sha1Hex, parseRange, pwnedCount, estimateStrength, generatePassword, safeBrowsingLookup, BRANDS
+    sha1Hex, parseRange, pwnedCount, estimateStrength, generatePassword, safeBrowsingLookup, BRANDS,
+    cmpVer, detectClient, assessClient
   };
 });
