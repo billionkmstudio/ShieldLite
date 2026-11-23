@@ -1,0 +1,18 @@
+{
+  "updated": "2026-11-23T03:00:00.000Z",
+  "chrome": {
+    "win": { "latest": "158.0.8127.37", "min": "157.0.8103.79" }
+  },
+  "ios": {
+    "branches": [
+      { "major": 27, "latest": "27.2.1", "date": "2026-11-09", "exploited": 0 },
+      { "major": 26, "latest": "26.7.3", "date": "2026-11-09", "exploited": 0 }
+    ]
+  },
+  "kev": {
+    "chromium": [
+      { "cve": "CVE-2026-125350", "date": "2026-11-10", "name": "Google Chromium XML Use-After-Free Vulnerability" }
+    ],
+    "apple": []
+  }
+}

@@ -203,6 +203,23 @@ textarea, .plainfield, .field input {
 .item-main::after { content: ""; flex: none; width: 8px; height: 8px; margin: 9px 4px 0 0; border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3); transform: rotate(45deg); transition: transform .15s; }
 .item-main[aria-expanded="true"]::after { transform: rotate(-135deg); margin-top: 14px; }
 
+/* ---------- version check ---------- */
+.vercard { margin: 4px 0 8px; }
+.vercard > h2 { margin: 0 0 8px; font-size: 17px; }
+.vrow + .vrow { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 12px; }
+.vhead { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.vhead b { font-size: 16px; }
+.vpill { flex: none; font-size: 12px; font-weight: 700; border: 1px solid currentColor; border-radius: 999px; padding: 1px 10px; }
+.p-ok { color: var(--ok); }
+.p-caution { color: var(--caution); }
+.p-high { color: var(--high); }
+.p-muted { color: var(--ink-3); }
+.vlist { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 8px 0 0; font-size: 14.5px; line-height: 1.5; }
+.vlist dt { color: var(--ink-3); font-weight: 600; }
+.vlist dd { margin: 0; color: var(--ink-2); min-width: 0; }
+.vlist dd.mono { font-family: var(--mono); font-size: 13.5px; color: var(--ink); overflow-wrap: anywhere; }
+.vlist .kev { display: block; margin-top: 4px; font-size: 13px; color: var(--ink-3); }
+
 /* ---------- tab bar ---------- */
 .tabbar {
   position: fixed; inset: auto 0 0 0; padding: 6px 10px calc(6px + env(safe-area-inset-bottom));

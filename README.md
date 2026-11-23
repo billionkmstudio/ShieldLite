@@ -1,6 +1,6 @@
 # ShieldLite
 
-iPhone 用嘅輕量防護 PWA：連結釣魚分析、密碼洩漏檢查（k-匿名）、iPhone 保安健檢清單。純靜態檔案，冇後端。
+iPhone 用嘅輕量防護 PWA：連結釣魚分析、密碼洩漏檢查（k-匿名）、系統同瀏覽器版本檢查、iPhone 保安健檢清單。純靜態檔案，冇後端。
 
 ## 部署（一定要 HTTPS）
 
@@ -35,17 +35,28 @@ Safe Browsing API 只供個人非商業用途，商業用途要用 Google Web Ri
 注意：頁面用咗 `strict-origin` referrer 政策，所以瀏覽器只會傳送網域（冇路徑），參照網址一定要寫成 `https://你的網域/*`，寫 `https://你的網域/shieldlite/*` 會對唔上。
 測試出現 400 通常係 Key 打錯或者未啟用 API，403 通常係參照網址限制對唔上。官方說明：https://developers.google.com/safe-browsing/v4/get-started
 
+## 版本檢查
+
+健檢頁頂部會比較你部機嘅 iOS／Chrome 版本同最新版本，用「我哋見到／應該係／點解要理」顯示。
+
+- 資料檔：`versions.json`，由 `.github/workflows/versions.yml` 每日 06:17 UTC 自動更新，亦可以喺 GitHub Actions 撳「Run workflow」手動更新。
+- 資料來源：Chrome 用 Google VersionHistory API，iOS 用 SOFA（sofafeed.macadmins.io），已被利用漏洞用 CISA KEV。全部公開，唔使 API key。
+- Chrome 嘅 `min` 係 Google 仲喺度推送嘅最舊 build，等於或高過佢就算最新；`latest` 係已全面推出嘅最新 build。
+- 電腦同 Android 嘅 Chrome 用 client hints 攞完整版本號；iPhone 用 Safari 嘅版本號推算 iOS 版本（新版 Safari 凍結咗 UA 入面嘅 `OS 18_6`）。推算唔到就叫用家自己去設定睇。
+- 改咗 `scripts/update-versions.mjs` 先跑 `node scripts/test-update-versions.mjs`。
+- GitHub 設定要允許 Actions 寫入：Settings → Actions → General → Workflow permissions。
+
 ## 品牌名單
 
 `core.js` 嘅 `BRANDS` 已包含主要 UK 同 HK 銀行、快遞、電訊、政府部門同常見平台。加新品牌時，關鍵字（`k`）要夠獨特：太普通嘅字（例如 kraken、payme、sky、wise）會令正常網站被誤判。官方網域（`d`）寫錯會令真網站被當成冒充，加之前請核對清楚。`core.test.js` 有誤判測試可以跟住加。
 
 ## 測試
 
-`node core.test.js` 跑核心邏輯測試（連結分析、punycode、SHA-1、k-匿名請求、強度、產生器）。
+`node core.test.js` 跑核心邏輯測試（連結分析、punycode、SHA-1、k-匿名請求、強度、產生器、版本檢查）。
 
 ## 限制
 
 - iOS 唔容許 App 掃描其他 App 或檔案，所以呢個唔係傳統防毒。
-- 網頁讀唔到系統設定，健檢係自我檢查清單。
+- 網頁讀唔到系統設定，健檢係自我檢查清單。版本檢查只係由瀏覽器資料推算，睇唔到 iOS 嘅小更新（例如 x.y.z）。
 - 連結分析係特徵判斷，冇警號唔等於安全。
 - 短網址無法本機展開。
