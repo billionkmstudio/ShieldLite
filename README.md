@@ -35,6 +35,13 @@ Safe Browsing API 只供個人非商業用途，商業用途要用 Google Web Ri
 注意：頁面用咗 `strict-origin` referrer 政策，所以瀏覽器只會傳送網域（冇路徑），參照網址一定要寫成 `https://你的網域/*`，寫 `https://你的網域/shieldlite/*` 會對唔上。
 測試出現 400 通常係 Key 打錯或者未啟用 API，403 通常係參照網址限制對唔上。官方說明：https://developers.google.com/safe-browsing/v4/get-started
 
+## 分享即檢查同快速模式
+
+- 打開 `/?url=<連結>`（或者分享表單嘅 `text`／`title`）就會即刻分析，之後網址會清走個連結；service worker 唔會將帶參數嘅頁面寫入快取。
+- Android：`manifest.webmanifest` 有 `share_target`，用 Chrome 安裝之後會出現喺分享選單。
+- iPhone：PWA 唔支援分享目標，要用「捷徑」App，步驟寫喺「關於」頁。
+- 健檢頁預設只顯示 5 項必做（`QUICK`），可以撳掣顯示全部；揀選會記住。
+
 ## Android 支援
 
 - 健檢頁頂有「iPhone｜Android」切換，預設跟部機自動揀，揀咗會記住（幫家人檢查都得）。

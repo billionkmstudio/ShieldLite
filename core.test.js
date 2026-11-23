@@ -211,5 +211,14 @@ const ids = (r) => r.findings.map((f) => f.id);
     assert.equal(C.assessPatch('2026-13', now), null);
   });
 
+  ok('sharedInput picks the field with the link', () => {
+    assert.equal(C.sharedInput('?url=https%3A%2F%2Fexample.com%2Fa'), 'https://example.com/a');
+    assert.equal(C.sharedInput('?title=Hi&text=' + encodeURIComponent('你個包裹 https://royal-mail.top/x 請付款')), '你個包裹 https://royal-mail.top/x 請付款');
+    assert.equal(C.sharedInput('?title=evri-parcel.info&text='), 'evri-parcel.info');
+    assert.equal(C.sharedInput('?text=hello'), 'hello');
+    assert.equal(C.sharedInput(''), null);
+    assert.equal(C.sharedInput('?share=1'), null);
+  });
+
   console.log(`\n${n} checks passed`);
 })().catch((e) => { console.error(e); process.exit(1); });

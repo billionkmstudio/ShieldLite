@@ -615,9 +615,20 @@
     return { months, status: months <= 2 ? 'ok' : months <= 5 ? 'caution' : 'high' };
   }
 
+  // Pick the text to check from a share / shortcut URL (?url=…&text=…&title=…).
+  // Share sheets put links in different fields: WhatsApp uses text, Chrome uses url.
+  function sharedInput(search) {
+    let q;
+    try { q = new URLSearchParams(search || ''); } catch (e) { return null; }
+    const vals = ['url', 'text', 'title'].map((k) => (q.get(k) || '').trim()).filter(Boolean);
+    if (!vals.length) return null;
+    const linky = /https?:\/\/|\b(?:[a-z0-9-]+\.)+[a-z]{2,}\b/i;
+    return (vals.find((v) => linky.test(v)) || vals[0]).slice(0, 4000);
+  }
+
   return {
     analyzeUrl, defang, registrable, levenshtein, punyDecode, hostToUnicode,
     sha1Hex, parseRange, pwnedCount, estimateStrength, generatePassword, safeBrowsingLookup, BRANDS,
-    cmpVer, detectClient, assessClient, assessPatch
+    cmpVer, detectClient, assessClient, assessPatch, sharedInput
   };
 });

@@ -120,6 +120,23 @@
 
       hl_h: 'iPhone 保安健檢', hl_h_android: 'Android 保安健檢',
       plat_label: '揀手機類型',
+      g_quick: '5 項必做',
+      q_progress: (d, n) => `快速檢查：${n} 項做咗 ${d} 項`,
+      q_done: '5 項必做全部完成',
+      q_next_more: '想再穩陣啲，可以做埋進階檢查。',
+      q_more: (n) => `顯示進階檢查（另外 ${n} 項）`,
+      q_less: '只顯示 5 項必做',
+      ab_share_h: '分享即檢查',
+      ab_share_p: '收到可疑連結，唔使複製貼上，喺 WhatsApp、短訊或者電郵直接分享去 ShieldLite 就會即刻分析。',
+      ab_share_and_h: 'Android：',
+      ab_share_and: '先用 Chrome 將 ShieldLite「安裝應用程式」，之後長按連結 → 分享 → 揀 ShieldLite。',
+      ab_share_ios_h: 'iPhone：用「捷徑」App 整一個分享按鈕（只需做一次）',
+      ab_share_s1: '開「捷徑」App → 右上角 ＋ 新增捷徑，改名做「ShieldLite 檢查」。',
+      ab_share_s2: '撳底部 ⓘ → 開啟「在分享表單中顯示」，接收類型只揀「URL」同「文字」。',
+      ab_share_s3: '加動作「URL 編碼」，編碼內容揀「捷徑輸入」。',
+      ab_share_s4: '加動作「打開 URL」，網址填下面嗰條，最尾撳「插入變數」揀「已編碼的文字」。',
+      ab_share_s5: '完成。之後喺訊息長按連結 → 分享 → 揀「ShieldLite 檢查」。',
+      ab_share_url: '捷徑用嘅網址：',
       hl_lede: '網頁讀唔到你部機嘅系統設定，所以呢度係自我檢查清單。逐項對住設定撳一撳，睇完再打剔。',
       hl_score: '保安分數',
       hl_good: '做得唔錯', hl_ok: '尚可，仲有改善空間', hl_low: '需要加強',
@@ -372,6 +389,23 @@
 
       hl_h: 'iPhone security checkup', hl_h_android: 'Android security checkup',
       plat_label: 'Choose phone type',
+      g_quick: '5 must-dos',
+      q_progress: (d, n) => `Quick check: ${d} of ${n} done`,
+      q_done: 'All 5 must-dos done',
+      q_next_more: 'For extra protection, try the full checkup.',
+      q_more: (n) => `Show full checkup (${n} more)`,
+      q_less: 'Show only the 5 must-dos',
+      ab_share_h: 'Share to check',
+      ab_share_p: 'Got a suspicious link? Skip copy and paste: share it straight from WhatsApp, Messages or email to ShieldLite and it is checked at once.',
+      ab_share_and_h: 'Android:',
+      ab_share_and: 'Install ShieldLite from Chrome first (⋮ → Install app). Then long-press a link → Share → ShieldLite.',
+      ab_share_ios_h: 'iPhone: make a share button with the Shortcuts app (one time only)',
+      ab_share_s1: 'Open Shortcuts → tap + to add a shortcut, and name it "ShieldLite check".',
+      ab_share_s2: 'Tap ⓘ at the bottom → turn on Show in Share Sheet, and accept only URLs and Text.',
+      ab_share_s3: 'Add the action URL Encode, encoding Shortcut Input.',
+      ab_share_s4: 'Add the action Open URLs. Enter the address below, then at the end tap Insert Variable → Encoded Text.',
+      ab_share_s5: 'Done. Long-press a link in a message → Share → ShieldLite check.',
+      ab_share_url: 'Address for the shortcut:',
       hl_lede: "A web page can't read your phone's system settings, so this is a self-check list. Open each setting, look, then tick it off.",
       hl_score: 'Security score',
       hl_good: 'Looking good', hl_ok: 'Decent, room to improve', hl_low: 'Needs work',
@@ -750,10 +784,23 @@
   const IS_ANDROID = /Android/i.test(navigator.userAgent);
   let plat = store.get('plat', IS_ANDROID ? 'android' : 'ios');
   const healthGroups = () => (plat === 'android' ? HEALTH_ANDROID : HEALTH_IOS);
+  // Quick mode shows only the items that stop the most common attacks.
+  const QUICK = {
+    ios: ['update', 'passcode', 'sdp', 'apple2fa', 'unknown'],
+    android: ['a_update', 'a_sideload', 'a_protect', 'a_access', 'a_g2fa']
+  };
+  let hlMode = store.get('hlMode', 'quick');
+  function shownGroups() {
+    const all = healthGroups();
+    if (hlMode !== 'quick') return all;
+    const weight = {};
+    all.forEach((grp) => grp.items.forEach(([id, w]) => { weight[id] = w; }));
+    return [{ g: 'g_quick', items: QUICK[plat].map((id) => [id, weight[id]]) }];
+  }
   let health = store.get('health', {});
   const openItems = new Set();
 
-  function ring(pct) {
+  function ring(pct, label) {
     const NS = 'http://www.w3.org/2000/svg';
     const c = 2 * Math.PI * 40;
     const svg = document.createElementNS(NS, 'svg');
@@ -765,7 +812,7 @@
     svg.append(mk('circle', { class: 'bg', cx: 50, cy: 50, r: 40 }));
     svg.append(mk('circle', { class: 'fg', cx: 50, cy: 50, r: 40, 'stroke-dasharray': c.toFixed(1), 'stroke-dashoffset': (c * (1 - pct / 100)).toFixed(1) }));
     const tx = mk('text', { x: 50, y: 51 });
-    tx.textContent = pct;
+    tx.textContent = label == null ? pct : label;
     svg.append(tx);
     return svg;
   }
@@ -780,10 +827,12 @@
     });
     renderPatch();
 
-    let total = 0, got = 0, next = null;
-    healthGroups().forEach((grp) => grp.items.forEach(([id, w]) => {
+    const quick = hlMode === 'quick';
+    let total = 0, got = 0, next = null, done = 0, count = 0;
+    shownGroups().forEach((grp) => grp.items.forEach(([id, w]) => {
       total += w;
-      if (health[id]) got += w;
+      count++;
+      if (health[id]) { got += w; done++; }
       else if (w > 0 && (!next || w > next.w)) next = { id, w };
     }));
     const pct = total ? Math.round((got / total) * 100) : 0;
@@ -792,9 +841,9 @@
     const envTag = (ok, label) => el('span', { class: 'tag ' + (ok ? 'ok' : 'no') }, (ok ? '✓ ' : '– ') + label);
 
     const sum = $('#healthSummary');
-    sum.replaceChildren(ring(pct), el('div', { class: 'summary-text' },
-      el('b', null, pct >= 85 ? t('hl_good') : pct >= 60 ? t('hl_ok') : t('hl_low')),
-      el('span', null, next ? t('hl_next', t('h_' + next.id + '_t')) : t('hl_all')),
+    sum.replaceChildren(ring(pct, quick ? done + '/' + count : null), el('div', { class: 'summary-text' },
+      el('b', null, quick ? (done === count ? t('q_done') : t('q_progress', done, count)) : pct >= 85 ? t('hl_good') : pct >= 60 ? t('hl_ok') : t('hl_low')),
+      el('span', null, next ? t('hl_next', t('h_' + next.id + '_t')) : quick ? t('q_next_more') : t('hl_all')),
       el('div', { class: 'env' },
         envTag(window.isSecureContext, t('hl_env_https')),
         envTag(standalone, t('hl_env_app')),
@@ -802,7 +851,7 @@
 
     const list = $('#healthList');
     list.replaceChildren();
-    healthGroups().forEach((grp) => {
+    shownGroups().forEach((grp) => {
       const g = el('div', { class: 'group' }, el('h2', null, t(grp.g)));
       grp.items.forEach(([id, w]) => {
         const open = openItems.has(id);
@@ -824,6 +873,11 @@
       });
       list.append(g);
     });
+    const allCount = healthGroups().reduce((n, grp) => n + grp.items.length, 0);
+    $('#healthMore').replaceChildren(el('button', {
+      type: 'button', class: 'btn ghost',
+      onclick: () => { hlMode = quick ? 'full' : 'quick'; store.set('hlMode', hlMode); openItems.clear(); renderHealth(); }
+    }, quick ? t('q_more', allCount - QUICK[plat].length) : t('q_less')));
   }
 
   /* ------------------------ Android security patch ------------------------ */
@@ -969,6 +1023,7 @@
     $$('[data-i18n-ph]').forEach((n) => { n.setAttribute('placeholder', t(n.getAttribute('data-i18n-ph'))); });
     $$('[data-i18n-aria]').forEach((n) => { n.setAttribute('aria-label', t(n.getAttribute('data-i18n-aria'))); });
     $('#instText').textContent = t(IS_ANDROID ? 'inst_d_android' : 'inst_d');
+    $('#shareHint').textContent = location.origin + location.pathname + '?url=';
     $('#langBtn').textContent = lang === 'zh' ? 'EN' : '中';
     $('#langBtn').setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切換至中文');
     $('#pwToggle').textContent = $('#pwInput').type === 'password' ? t('show') : t('hide');
@@ -1064,7 +1119,17 @@
     applyLang();
     loadVersions();
     const fromHash = location.hash.replace('#', '');
-    showTab(TABS.includes(fromHash) ? fromHash : store.get('tab', 'link'));
+    // Opened from a share sheet or Shortcut: check the link straight away.
+    const shared = C.sharedInput(location.search);
+    if (shared) {
+      showTab('link');
+      $('#linkInput').value = shared;
+      runLinkCheck();
+      // Drop the link from the address bar and history.
+      try { history.replaceState(null, '', location.pathname + '#link'); } catch (e) { /* ignore */ }
+    } else {
+      showTab(TABS.includes(fromHash) ? fromHash : store.get('tab', 'link'));
+    }
 
     if ('serviceWorker' in navigator && window.isSecureContext) {
       navigator.serviceWorker.register('sw.js').catch(() => { /* offline support is optional */ });
