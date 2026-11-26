@@ -34,7 +34,7 @@
   /* ------------------------------- i18n ------------------------------- */
   const I18N = {
     zh: {
-      tagline: '連結・密碼・手機保安',
+      tagline: '手機安全，一目了然',
       tab_link: '連結', tab_pw: '密碼', tab_health: '健檢', tab_about: '關於',
       paste: '貼上', copy: '複製', copied: '已複製', clear: '清除', show: '顯示', hide: '隱藏',
       inst_t: '加入主畫面',
@@ -307,7 +307,7 @@
     },
 
     en: {
-      tagline: 'Links · passwords · phone security',
+      tagline: 'Your phone\'s security at a glance',
       tab_link: 'Links', tab_pw: 'Passwords', tab_health: 'Checkup', tab_about: 'About',
       paste: 'Paste', copy: 'Copy', copied: 'Copied', clear: 'Clear', show: 'Show', hide: 'Hide',
       inst_t: 'Add to Home Screen',
@@ -612,9 +612,9 @@
   }
 
   /* ------------------------------- tabs --------------------------------- */
-  const TABS = ['link', 'pw', 'health', 'about'];
+  const TABS = ['health', 'link', 'pw', 'about'];
   function showTab(id) {
-    if (!TABS.includes(id)) id = 'link';
+    if (!TABS.includes(id)) id = 'health';
     TABS.forEach((x) => {
       $('#tab-' + x).hidden = x !== id;
       $('#btn-' + x).setAttribute('aria-selected', String(x === id));
@@ -1148,7 +1148,7 @@
       // Drop the link from the address bar and history.
       try { history.replaceState(null, '', location.pathname + '#link'); } catch (e) { /* ignore */ }
     } else {
-      showTab(TABS.includes(fromHash) ? fromHash : store.get('tab', 'link'));
+      showTab(TABS.includes(fromHash) ? fromHash : store.get('tab', 'health'));
     }
 
     if ('serviceWorker' in navigator && window.isSecureContext) {

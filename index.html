@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.pwnedpasswords.com https://safebrowsing.googleapis.com; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="strict-origin">
-<title>ShieldLite — 連結檢查・密碼洩漏・手機保安健檢 | Billion Studio</title>
-<meta name="description" content="免費檢查可疑連結、密碼有冇外洩，同埋 iPhone／Android 保安健檢。Free link, leaked-password and phone security checks. Runs on your device, no sign-up.">
+<title>ShieldLite — 手機安全，一目了然 | Billion Studio</title>
+<meta name="description" content="免費 iPhone／Android 手機保安健檢：檢查系統及瀏覽器版本、逐步完善保安設定，並可檢查可疑連結及密碼是否外洩。Free phone security checkup for iPhone and Android. Runs on your device, no sign-up.">
 <meta name="author" content="Billion Studio">
 <link rel="canonical" href="https://shieldlite.billionstudio.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ShieldLite by Billion Studio">
-<meta property="og:title" content="ShieldLite — 連結檢查・密碼洩漏・手機保安健檢">
-<meta property="og:description" content="收到可疑短訊？貼上連結即刻分析。密碼洩漏檢查、iPhone／Android 保安健檢，資料留喺你部機。">
+<meta property="og:title" content="ShieldLite — 手機安全，一目了然">
+<meta property="og:description" content="免費手機保安健檢，即時了解系統版本及保安設定狀況，另設可疑連結及密碼外洩檢查。資料只保存在你的裝置。">
 <meta property="og:url" content="https://shieldlite.billionstudio.app/">
 <meta property="og:image" content="https://shieldlite.billionstudio.app/icons/icon-512.png">
 <meta property="og:locale" content="zh_HK">
@@ -56,7 +56,7 @@
 <main>
 
   <!-- ===== 連結 ===== -->
-  <section id="tab-link" role="tabpanel" aria-labelledby="btn-link">
+  <section id="tab-link" role="tabpanel" aria-labelledby="btn-link" hidden>
     <h1 data-i18n="link_h"></h1>
     <p class="lede" data-i18n="link_lede"></p>
     <form id="linkForm" class="block" autocomplete="off">
@@ -117,7 +117,7 @@
   </section>
 
   <!-- ===== 健檢 ===== -->
-  <section id="tab-health" role="tabpanel" aria-labelledby="btn-health" hidden>
+  <section id="tab-health" role="tabpanel" aria-labelledby="btn-health">
     <h1 id="hlTitle"></h1>
     <p class="lede" data-i18n="hl_lede"></p>
     <div class="seg" role="radiogroup" data-i18n-aria="plat_label">
@@ -214,6 +214,10 @@
 
 <nav class="tabbar" aria-label="Main">
   <div class="tabbar-in" role="tablist">
+    <button class="tab" id="btn-health" role="tab" aria-controls="tab-health" type="button" data-tab="health">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v5c0 5-3.400 8.700-8 10-4.600-1.300-8-5-8-10V6z"/><path d="M8.500 12l2.500 2.500 4.500-5"/></svg>
+      <span data-i18n="tab_health"></span>
+    </button>
     <button class="tab" id="btn-link" role="tab" aria-controls="tab-link" type="button" data-tab="link">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.700 0l3-3a4 4 0 0 0-5.700-5.700l-1 1"/><path d="M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></svg>
       <span data-i18n="tab_link"></span>
@@ -221,10 +225,6 @@
     <button class="tab" id="btn-pw" role="tab" aria-controls="tab-pw" type="button" data-tab="pw">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></svg>
       <span data-i18n="tab_pw"></span>
-    </button>
-    <button class="tab" id="btn-health" role="tab" aria-controls="tab-health" type="button" data-tab="health">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v5c0 5-3.400 8.700-8 10-4.600-1.300-8-5-8-10V6z"/><path d="M8.500 12l2.500 2.500 4.500-5"/></svg>
-      <span data-i18n="tab_health"></span>
     </button>
     <button class="tab" id="btn-about" role="tab" aria-controls="tab-about" type="button" data-tab="about">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
