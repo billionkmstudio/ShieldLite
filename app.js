@@ -34,7 +34,7 @@
   /* ------------------------------- i18n ------------------------------- */
   const I18N = {
     zh: {
-      tagline: '連結・密碼・手機保安',
+      tagline: '手機安全，一目了然',
       tab_link: '連結', tab_pw: '密碼', tab_health: '健檢', tab_about: '關於',
       paste: '貼上', copy: '複製', copied: '已複製', clear: '清除', show: '顯示', hide: '隱藏',
       inst_t: '加入主畫面',
@@ -141,7 +141,7 @@
       ab_share_s4: '加動作「打開 URL」，網址填下面嗰條，最尾撳「插入變數」揀「已編碼的文字」。',
       ab_share_s5: '完成。之後喺訊息長按連結 → 分享 → 揀「ShieldLite 檢查」。',
       ab_share_url: '捷徑用嘅網址：',
-      hl_lede: '網頁讀唔到你部機嘅系統設定，所以呢度係自我檢查清單。逐項對住設定撳一撳，睇完再打剔。',
+      hl_lede: '跟隨以下清單逐項檢查，只需數分鐘，即可令你的手機更安全。每完成一項，請在旁邊打剔。',
       hl_score: '保安分數',
       hl_good: '做得唔錯', hl_ok: '尚可，仲有改善空間', hl_low: '需要加強',
       hl_next: (t) => `下一步：${t}`,
@@ -301,14 +301,13 @@
       ab_cleared: '已清除',
       ab_ver: '版本',
 
-      ft_cta_h: '由 Billion Studio 製作',
-      ft_cta_p: '網站、AI 工具同中小企數碼方案，睇吓我哋仲做咗啲乜',
       ft_disclaimer: 'ShieldLite 免費使用，所有檢查只作參考，唔能夠保證絕對安全。遇到懷疑詐騙，請直接聯絡銀行或相關機構。',
-      ft_privacy: '私隱同資料用途'
+      ft_privacy: '私隱同資料用途',
+      ft_contact: '聯絡'
     },
 
     en: {
-      tagline: 'Links · passwords · phone security',
+      tagline: 'Your phone\'s security at a glance',
       tab_link: 'Links', tab_pw: 'Passwords', tab_health: 'Checkup', tab_about: 'About',
       paste: 'Paste', copy: 'Copy', copied: 'Copied', clear: 'Clear', show: 'Show', hide: 'Hide',
       inst_t: 'Add to Home Screen',
@@ -415,7 +414,7 @@
       ab_share_s4: 'Add the action Open URLs. Enter the address below, then at the end tap Insert Variable → Encoded Text.',
       ab_share_s5: 'Done. Long-press a link in a message → Share → ShieldLite check.',
       ab_share_url: 'Address for the shortcut:',
-      hl_lede: "A web page can't read your phone's system settings, so this is a self-check list. Open each setting, look, then tick it off.",
+      hl_lede: 'Work through the list below. In a few minutes your phone will be safer. Tick each item as you finish it.',
       hl_score: 'Security score',
       hl_good: 'Looking good', hl_ok: 'Decent, room to improve', hl_low: 'Needs work',
       hl_next: (t) => `Next: ${t}`,
@@ -575,10 +574,9 @@
       ab_cleared: 'Cleared',
       ab_ver: 'Version',
 
-      ft_cta_h: 'Made by Billion Studio',
-      ft_cta_p: 'Websites, AI tools and digital solutions for small businesses. See what else we build',
       ft_disclaimer: 'ShieldLite is free to use. Checks are for guidance only and cannot guarantee safety. If you suspect a scam, contact your bank or the organisation directly.',
-      ft_privacy: 'Privacy and how your data is used'
+      ft_privacy: 'Privacy and how your data is used',
+      ft_contact: 'Contact:'
     }
   };
 
@@ -614,9 +612,9 @@
   }
 
   /* ------------------------------- tabs --------------------------------- */
-  const TABS = ['link', 'pw', 'health', 'about'];
+  const TABS = ['health', 'link', 'pw', 'about'];
   function showTab(id) {
-    if (!TABS.includes(id)) id = 'link';
+    if (!TABS.includes(id)) id = 'health';
     TABS.forEach((x) => {
       $('#tab-' + x).hidden = x !== id;
       $('#btn-' + x).setAttribute('aria-selected', String(x === id));
@@ -1150,7 +1148,7 @@
       // Drop the link from the address bar and history.
       try { history.replaceState(null, '', location.pathname + '#link'); } catch (e) { /* ignore */ }
     } else {
-      showTab(TABS.includes(fromHash) ? fromHash : store.get('tab', 'link'));
+      showTab(TABS.includes(fromHash) ? fromHash : store.get('tab', 'health'));
     }
 
     if ('serviceWorker' in navigator && window.isSecureContext) {
