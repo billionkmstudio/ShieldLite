@@ -303,7 +303,8 @@
 
       ft_disclaimer: 'ShieldLite 免費使用，所有檢查只作參考，唔能夠保證絕對安全。遇到懷疑詐騙，請直接聯絡銀行或相關機構。',
       ft_privacy: '私隱同資料用途',
-      ft_contact: '聯絡'
+      ft_contact: '聯絡',
+      home_label: 'ShieldLite 首頁'
     },
 
     en: {
@@ -576,7 +577,8 @@
 
       ft_disclaimer: 'ShieldLite is free to use. Checks are for guidance only and cannot guarantee safety. If you suspect a scam, contact your bank or the organisation directly.',
       ft_privacy: 'Privacy and how your data is used',
-      ft_contact: 'Contact:'
+      ft_contact: 'Contact:',
+      home_label: 'ShieldLite home'
     }
   };
 
@@ -1048,6 +1050,8 @@
   /* --------------------------------- init --------------------------------- */
   function init() {
     $$('.tab').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
+    // Brand returns to the home tab (the checkup), like a site logo.
+    $('#homeLink').addEventListener('click', (e) => { e.preventDefault(); showTab(TABS[0]); });
     $$('[data-goto]').forEach((b) => b.addEventListener('click', () => {
       showTab(b.dataset.goto);
       const target = b.dataset.anchor && document.getElementById(b.dataset.anchor);
