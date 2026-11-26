@@ -301,10 +301,9 @@
       ab_cleared: '已清除',
       ab_ver: '版本',
 
-      ft_cta_h: '由 Billion Studio 製作',
-      ft_cta_p: '網站、AI 工具同中小企數碼方案，睇吓我哋仲做咗啲乜',
       ft_disclaimer: 'ShieldLite 免費使用，所有檢查只作參考，唔能夠保證絕對安全。遇到懷疑詐騙，請直接聯絡銀行或相關機構。',
-      ft_privacy: '私隱同資料用途'
+      ft_privacy: '私隱同資料用途',
+      ft_contact: '聯絡'
     },
 
     en: {
@@ -575,10 +574,9 @@
       ab_cleared: 'Cleared',
       ab_ver: 'Version',
 
-      ft_cta_h: 'Made by Billion Studio',
-      ft_cta_p: 'Websites, AI tools and digital solutions for small businesses. See what else we build',
       ft_disclaimer: 'ShieldLite is free to use. Checks are for guidance only and cannot guarantee safety. If you suspect a scam, contact your bank or the organisation directly.',
-      ft_privacy: 'Privacy and how your data is used'
+      ft_privacy: 'Privacy and how your data is used',
+      ft_contact: 'Contact:'
     }
   };
 

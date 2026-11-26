@@ -19,7 +19,7 @@ iPhone 要 HTTPS 先可以用加密功能（密碼檢查）同安裝成 App。
 
 ## 公開網址同 SEO
 
-正式網址係 `https://shieldlite.billionstudio.app/`，`index.html` 嘅 canonical、Open Graph、JSON-LD，同 `robots.txt`、`sitemap.xml` 都用呢個網址。換網域要一齊改。Footer 連去 Billion Studio 嘅連結帶 `utm_source=shieldlite`，喺網站分析可以睇到由 ShieldLite 帶嚟幾多人。
+正式網址係 `https://shieldlite.billionstudio.app/`，`index.html` 嘅 canonical、Open Graph、JSON-LD，同 `robots.txt`、`sitemap.xml` 都用呢個網址。換網域要一齊改。Footer 版權行嘅 Billion Studio 連去 billionstudio.co.uk，帶 `utm_source=shieldlite`，喺網站分析可以睇到由 ShieldLite 帶嚟幾多人。
 
 ## 擴充
 
