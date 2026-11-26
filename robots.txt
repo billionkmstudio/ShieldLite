@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shieldlite.billionstudio.app/sitemap.xml

@@ -254,3 +254,18 @@ textarea, .plainfield, .field input {
   .stamp { animation: none; }
   .ring .fg, .item-main::after { transition: none; }
 }
+
+/* ---------- footer ---------- */
+.site-foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 13px; line-height: 1.5; }
+.site-foot p { margin: 12px 0 0; }
+.foot-cta {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 16px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
+  color: var(--ink); text-decoration: none; min-height: 48px;
+}
+.foot-cta b { display: block; font-size: 15px; }
+.foot-cta small { display: block; color: var(--ink-2); font-size: 13px; }
+.foot-arrow { color: var(--action); font-size: 20px; font-weight: 700; flex: none; }
+.foot-cta:hover .foot-arrow { transform: translateX(2px); }
+.linkish { font: inherit; color: var(--action); background: none; border: 0; padding: 6px 0; min-height: 34px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.foot-legal { color: var(--ink-3); }
