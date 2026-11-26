@@ -15,6 +15,12 @@ iPhone 要 HTTPS 先可以用加密功能（密碼檢查）同安裝成 App。
 
 改咗任何檔案之後，將 `sw.js` 入面嘅 `CACHE` 版本號加一（例如 `shieldlite-v2`），手機先會拎到新版。
 
+正式發佈新版時，同時改 `app.js` 頂部嘅 `APP_VERSION`（footer 同「關於」頁都係讀呢個值）。版權年份由 `COPYRIGHT_FROM` 開始自動延伸到今年。
+
+## 公開網址同 SEO
+
+正式網址係 `https://shieldlite.billionstudio.app/`，`index.html` 嘅 canonical、Open Graph、JSON-LD，同 `robots.txt`、`sitemap.xml` 都用呢個網址。換網域要一齊改。Footer 連去 Billion Studio 嘅連結帶 `utm_source=shieldlite`，喺網站分析可以睇到由 ShieldLite 帶嚟幾多人。
+
 ## 擴充
 
 - 品牌名單：`core.js` 嘅 `BRANDS`，加入你想保護嘅品牌同官方網域。

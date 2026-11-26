@@ -1,6 +1,10 @@
 (() => {
   'use strict';
   const C = window.ShieldCore;
+  // Single source of truth for the version shown in the footer and About tab.
+  // Bump this (and CACHE in sw.js) on every release.
+  const APP_VERSION = '1.4.0';
+  const COPYRIGHT_FROM = 2026;
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
@@ -295,7 +299,12 @@
       ab_clear: '清除所有本機資料',
       ab_clear_confirm: '會清除健檢進度、語言同 Safe Browsing 設定。確定？',
       ab_cleared: '已清除',
-      ab_ver: '版本'
+      ab_ver: '版本',
+
+      ft_cta_h: '由 Billion Studio 製作',
+      ft_cta_p: '網站、AI 工具同中小企數碼方案，睇吓我哋仲做咗啲乜',
+      ft_disclaimer: 'ShieldLite 免費使用，所有檢查只作參考，唔能夠保證絕對安全。遇到懷疑詐騙，請直接聯絡銀行或相關機構。',
+      ft_privacy: '私隱同資料用途'
     },
 
     en: {
@@ -564,7 +573,12 @@
       ab_clear: 'Clear all local data',
       ab_clear_confirm: 'This clears checklist progress, language and Safe Browsing settings. Continue?',
       ab_cleared: 'Cleared',
-      ab_ver: 'Version'
+      ab_ver: 'Version',
+
+      ft_cta_h: 'Made by Billion Studio',
+      ft_cta_p: 'Websites, AI tools and digital solutions for small businesses. See what else we build',
+      ft_disclaimer: 'ShieldLite is free to use. Checks are for guidance only and cannot guarantee safety. If you suspect a scam, contact your bank or the organisation directly.',
+      ft_privacy: 'Privacy and how your data is used'
     }
   };
 
@@ -1027,12 +1041,20 @@
     $('#langBtn').textContent = lang === 'zh' ? 'EN' : '中';
     $('#langBtn').setAttribute('aria-label', lang === 'zh' ? 'Switch to English' : '切換至中文');
     $('#pwToggle').textContent = $('#pwInput').type === 'password' ? t('show') : t('hide');
+    const y = new Date().getFullYear();
+    $('#ftYear').textContent = y > COPYRIGHT_FROM ? COPYRIGHT_FROM + '–' + y : String(COPYRIGHT_FROM);
+    $$('.appVer').forEach((n) => { n.textContent = APP_VERSION; });
     renderLink(); renderPw(); renderStrength(); renderHealth(); renderVersions();
   }
 
   /* --------------------------------- init --------------------------------- */
   function init() {
     $$('.tab').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
+    $$('[data-goto]').forEach((b) => b.addEventListener('click', () => {
+      showTab(b.dataset.goto);
+      const target = b.dataset.anchor && document.getElementById(b.dataset.anchor);
+      if (target) target.scrollIntoView();
+    }));
     $('#langBtn').addEventListener('click', () => { lang = lang === 'zh' ? 'en' : 'zh'; store.set('lang', lang); applyLang(); });
 
     $('#linkForm').addEventListener('submit', (e) => { e.preventDefault(); runLinkCheck(); });

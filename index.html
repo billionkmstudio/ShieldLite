@@ -5,8 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.pwnedpasswords.com https://safebrowsing.googleapis.com; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="strict-origin">
-<title>ShieldLite</title>
-<meta name="description" content="Link checker, breached-password check, version check, and iPhone and Android security checklists. Runs on your device.">
+<title>ShieldLite — 連結檢查・密碼洩漏・手機保安健檢 | Billion Studio</title>
+<meta name="description" content="免費檢查可疑連結、密碼有冇外洩，同埋 iPhone／Android 保安健檢。Free link, leaked-password and phone security checks. Runs on your device, no sign-up.">
+<meta name="author" content="Billion Studio">
+<link rel="canonical" href="https://shieldlite.billionstudio.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ShieldLite by Billion Studio">
+<meta property="og:title" content="ShieldLite — 連結檢查・密碼洩漏・手機保安健檢">
+<meta property="og:description" content="收到可疑短訊？貼上連結即刻分析。密碼洩漏檢查、iPhone／Android 保安健檢，資料留喺你部機。">
+<meta property="og:url" content="https://shieldlite.billionstudio.app/">
+<meta property="og:image" content="https://shieldlite.billionstudio.app/icons/icon-512.png">
+<meta property="og:locale" content="zh_HK">
+<meta property="og:locale:alternate" content="en_GB">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"ShieldLite","url":"https://shieldlite.billionstudio.app/","applicationCategory":"SecurityApplication","operatingSystem":"iOS, Android, Web","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},"inLanguage":["zh-Hant-HK","en-GB"],"publisher":{"@type":"Organization","name":"Billion Studio","url":"https://billionstudio.app/"}}
+</script>
 <meta name="theme-color" content="#e9eef0" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0c171b" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -133,7 +147,7 @@
       <li data-i18n="ab_cant3"></li>
     </ul>
 
-    <h2 data-i18n="ab_net_h"></h2>
+    <h2 id="privacy" data-i18n="ab_net_h"></h2>
     <ul class="plain">
       <li data-i18n="ab_net1"></li>
       <li data-i18n="ab_net2"></li>
@@ -184,8 +198,23 @@
     <div class="row start">
       <button type="button" id="clearData" class="btn danger" data-i18n="ab_clear"></button>
     </div>
-    <p class="fine"><span data-i18n="ab_ver"></span> 1.3.0</p>
+    <p class="fine"><span data-i18n="ab_ver"></span> <span class="appVer"></span></p>
   </section>
+
+  <footer class="site-foot">
+    <a class="foot-cta" id="studioLink" href="https://billionstudio.app/?utm_source=shieldlite&amp;utm_medium=referral&amp;utm_campaign=footer" target="_blank" rel="noopener">
+      <span>
+        <b data-i18n="ft_cta_h"></b>
+        <small data-i18n="ft_cta_p"></small>
+      </span>
+      <span class="foot-arrow" aria-hidden="true">→</span>
+    </a>
+    <p class="foot-note" data-i18n="ft_disclaimer"></p>
+    <p class="foot-links">
+      <button type="button" class="linkish" data-goto="about" data-anchor="privacy" data-i18n="ft_privacy"></button>
+    </p>
+    <p class="foot-legal">© <span id="ftYear">2026</span> Billion Studio · ShieldLite v<span class="appVer"></span></p>
+  </footer>
 
 </main>
 
