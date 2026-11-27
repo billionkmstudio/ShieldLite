@@ -162,28 +162,6 @@
     <p class="fine" data-i18n="ab_host_p"></p>
     <p><span data-i18n="ab_contact_p"></span><a href="mailto:info@billionstudio.app">info@billionstudio.app</a></p>
 
-    <h2 data-i18n="ab_sb_h"></h2>
-    <p data-i18n="ab_sb_p"></p>
-    <ol class="plain steps">
-      <li data-i18n="ab_sb_s1"></li>
-      <li data-i18n="ab_sb_s2"></li>
-      <li data-i18n="ab_sb_s3"></li>
-      <li><span data-i18n="ab_sb_s4"></span> <code id="refHint"></code></li>
-      <li data-i18n="ab_sb_s5"></li>
-      <li data-i18n="ab_sb_s6"></li>
-    </ol>
-    <p class="fine"><span data-i18n="ab_sb_menu_note"></span>
-      <a href="https://developers.google.com/safe-browsing/v4/get-started" target="_blank" rel="noopener noreferrer" data-i18n="ab_sb_guide"></a></p>
-    <form id="sbForm" class="block" autocomplete="off">
-      <label class="chk"><input type="checkbox" id="sbOn"><span data-i18n="ab_sb_toggle"></span></label>
-      <label for="sbKey" class="sr-only" data-i18n="ab_sb_key_label"></label>
-      <input id="sbKey" class="plainfield" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-i18n-ph="ab_sb_key_ph">
-      <div class="row">
-        <button type="button" id="sbTest" class="btn ghost" data-i18n="ab_sb_test"></button>
-        <button type="submit" class="btn primary" data-i18n="ab_save"></button>
-      </div>
-      <div id="sbTestResult" class="sbline" aria-live="polite"></div>
-    </form>
 
     <h2 data-i18n="ab_install_h"></h2>
     <p data-i18n="ab_install_p"></p>
@@ -200,6 +178,31 @@
       <li data-i18n="ab_share_s5"></li>
     </ol>
     <p class="fine"><span data-i18n="ab_share_url"></span> <code id="shareHint"></code></p>
+
+    <details id="sbAdvanced" class="adv">
+      <summary><span data-i18n="ab_adv_h"></span><span class="adv-sub" data-i18n="ab_sb_h"></span></summary>
+      <p data-i18n="ab_sb_p"></p>
+      <ol class="plain steps">
+        <li data-i18n="ab_sb_s1"></li>
+        <li data-i18n="ab_sb_s2"></li>
+        <li data-i18n="ab_sb_s3"></li>
+        <li><span data-i18n="ab_sb_s4"></span> <code id="refHint"></code></li>
+        <li data-i18n="ab_sb_s5"></li>
+        <li data-i18n="ab_sb_s6"></li>
+      </ol>
+      <p class="fine"><span data-i18n="ab_sb_menu_note"></span>
+        <a href="https://developers.google.com/safe-browsing/v4/get-started" target="_blank" rel="noopener noreferrer" data-i18n="ab_sb_guide"></a></p>
+      <form id="sbForm" class="block" autocomplete="off">
+        <label class="chk"><input type="checkbox" id="sbOn"><span data-i18n="ab_sb_toggle"></span></label>
+        <label for="sbKey" class="sr-only" data-i18n="ab_sb_key_label"></label>
+        <input id="sbKey" class="plainfield" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-i18n-ph="ab_sb_key_ph">
+        <div class="row">
+          <button type="button" id="sbTest" class="btn ghost" data-i18n="ab_sb_test"></button>
+          <button type="submit" class="btn primary" data-i18n="ab_save"></button>
+        </div>
+        <div id="sbTestResult" class="sbline" aria-live="polite"></div>
+      </form>
+    </details>
 
     <h2 data-i18n="ab_data_h"></h2>
     <div class="row start">

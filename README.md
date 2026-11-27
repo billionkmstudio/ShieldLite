@@ -29,7 +29,7 @@ iPhone 要 HTTPS 先可以用加密功能（密碼檢查）同安裝成 App。
 
 ## Google Safe Browsing（選用）
 
-Safe Browsing API 只供個人非商業用途，商業用途要用 Google Web Risk。App 內「關於」頁已有同樣嘅步驟，並有「測試 Key」掣。
+Safe Browsing API 只供個人非商業用途，商業用途要用 Google Web Risk。App 內「關於」頁底部嘅「進階設定」摺疊區有同樣嘅步驟同「測試 Key」掣，預設收埋；用家開咗 Safe Browsing 先會自動展開。
 
 1. 登入 Google Cloud Console，建立項目。
 2. 「API 與服務」資料庫搵 Safe Browsing API，啟用。

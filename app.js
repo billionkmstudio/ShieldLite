@@ -3,7 +3,7 @@
   const C = window.ShieldCore;
   // Single source of truth for the version shown in the footer and About tab.
   // Bump this (and CACHE in sw.js) on every release.
-  const APP_VERSION = '1.4.0';
+  const APP_VERSION = '1.5.0';
   const COPYRIGHT_FROM = 2026;
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
@@ -280,7 +280,8 @@
       ab_store_p: '健檢進度、平台及語言選擇、Android 保安更新月份，以及（如有設定）Safe Browsing API Key。這些資料只存於此瀏覽器，可隨時在下方「本機資料」一鍵清除。',
       ab_host_p: '本網站由 Cloudflare 託管。與一般網站相同，託管服務可能保留標準存取紀錄（例如 IP 位址），ShieldLite 不會另行收集。',
       ab_contact_p: '如對私隱或本工具有任何查詢，歡迎電郵至 ',
-      ab_sb_h: 'Google Safe Browsing（選用）',
+      ab_adv_h: '進階設定',
+      ab_sb_h: 'Google Safe Browsing 黑名單查詢（選用，須自備 API Key）',
       ab_sb_p: 'Safe Browsing 可額外查詢 Google 的黑名單。你須自行申請免費 API Key，只限個人非商業用途（商業用途須使用 Google Web Risk）。Key 只會儲存在此裝置。',
       ab_sb_s1: '以 Google 帳戶登入 Google Cloud Console，建立一個項目（或選擇現有項目）。',
       ab_sb_s2: '在「API 與服務」的資料庫中搜尋「Safe Browsing API」，然後按「啟用」。',
@@ -561,7 +562,8 @@
       ab_store_p: 'Checklist progress, platform and language choice, your Android patch month and, if you set one, your Safe Browsing API key. This stays in this browser only and you can wipe it any time under Data on this device below.',
       ab_host_p: 'This site is hosted on Cloudflare. As with any website, the host may keep standard access logs (such as IP addresses). ShieldLite collects nothing beyond that.',
       ab_contact_p: 'Questions about privacy or the app? Email ',
-      ab_sb_h: 'Google Safe Browsing (optional)',
+      ab_adv_h: 'Advanced settings',
+      ab_sb_h: 'Google Safe Browsing blocklist lookup (optional, needs your own API key)',
       ab_sb_p: 'Safe Browsing can also check Google\'s blocklist. You need your own free API key, for personal non-commercial use only (commercial use needs Google Web Risk). The key is stored only on this device.',
       ab_sb_s1: 'Sign in to Google Cloud Console with a Google account and create a project (or pick an existing one).',
       ab_sb_s2: 'Under APIs & Services, open the Library, find Safe Browsing API and click Enable.',
@@ -1110,6 +1112,8 @@
     }));
 
     $('#sbOn').checked = !!store.get('sbOn', false);
+    // Keep the advanced section collapsed unless the user already uses it.
+    if (store.get('sbOn', false)) $('#sbAdvanced').open = true;
     $('#sbKey').value = store.get('sbKey', '');
     $('#sbForm').addEventListener('submit', (e) => {
       e.preventDefault();

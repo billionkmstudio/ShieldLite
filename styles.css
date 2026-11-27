@@ -264,3 +264,11 @@ textarea, .plainfield, .field input {
 .linkish { font: inherit; color: var(--action); background: none; border: 0; padding: 6px 0; min-height: 34px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 .foot-legal { color: var(--ink-3); }
 #tab-about h3 { margin-top: 18px; }
+.adv { margin: 28px 0 0; border: 1px solid var(--line); border-radius: 12px; padding: 0 14px; }
+.adv > summary { cursor: pointer; padding: 14px 0; font-weight: 700; list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.adv > summary::-webkit-details-marker { display: none; }
+.adv > summary::after { content: '＋'; position: absolute; right: 0; }
+.adv > summary { position: relative; padding-right: 28px; }
+.adv[open] > summary::after { content: '－'; }
+.adv-sub { font-size: 13px; font-weight: 500; color: var(--ink-3); }
+.adv[open] { padding-bottom: 14px; }
