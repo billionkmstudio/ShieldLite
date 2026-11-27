@@ -263,3 +263,4 @@ textarea, .plainfield, .field input {
 .site-foot a { color: var(--action); text-underline-offset: 2px; }
 .linkish { font: inherit; color: var(--action); background: none; border: 0; padding: 6px 0; min-height: 34px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 .foot-legal { color: var(--ink-3); }
+#tab-about h3 { margin-top: 18px; }
